@@ -112,7 +112,7 @@ Navigate to the Favorites Page to review saved psychologists.
 
 ## 🚀 Deployment
 
-The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
+The project is deployed on Vercel:🔗 [Live Demo](https://psychologists-services-sepia.vercel.app/)
 
 ## 🎨 Design & Documentation
  🔗 Figma Design: [Psychologists.Services UI](https://www.figma.com/file/I5vjNb0NsJOpQRnRpMloSY/Psychologists.Services?type=design&node-id=0-1&mode=design&t=4zfT2zFANRbp1fCK-0)
