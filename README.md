@@ -111,5 +111,6 @@ Navigate to the Favorites Page to review saved psychologists.
 The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
 
 ## 👤 Author
-
-Name: Yaroslav Terno📧 Email: yroslavterno@gmail.com🔗 LinkedIn: Yaroslav Terno
+**Name:** Yaroslav Terno
+📧 **Email:** yroslavterno@gmail.com 
+🔗 **LinkedIn:** [Yaroslav Terno](https://www.linkedin.com/in/yaroslav-terno)  
