@@ -82,13 +82,17 @@ ESLint & Prettier – for code formatting and quality assurance.
 
 ### 1️⃣ Clone the Repository
 
-git clone https://github.com/yourusername/psychological-services-app.git
-cd psychological-services-app
+```sh
+git clone git@github.com:DimaOstapchuk91/TravelTrucks.git
+cd TravelTrucks
+```
 
 ### 2️⃣ Install Dependencies and Run
 
+```sh
 npm install
 npm run dev
+```
 
 The application will be accessible at:👉 http://localhost:5173
 
