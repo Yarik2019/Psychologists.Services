@@ -84,7 +84,7 @@ ESLint & Prettier – for code formatting and quality assurance.
 
 ```sh
 git clone git@github.com:Yarik2019/Psychologists.Services.git
-cd TravelTrucks
+cd Psychologists.Services
 ```
 
 ### 2️⃣ Install Dependencies and Run
@@ -113,6 +113,10 @@ Navigate to the Favorites Page to review saved psychologists.
 ## 🚀 Deployment
 
 The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
+
+## 🎨 Design & Documentation
+### 🔗 Figma Design: Psychologists.Services UI https://www.figma.com/file/I5vjNb0NsJOpQRnRpMloSY/Psychologists.Services?type=design&node-id=0-1&mode=design&t=4zfT2zFANRbp1fCK-0
+### 📄 Technical Specification (TЗ): Google Docs https://docs.google.com/document/d/1PrTxBn6HQbb0Oz17g5_zvyLGIOZg0TIP3HPaEEp6ZLs/edit?tab=t.0
 
 ## 👤 Author
 **Name:** Yaroslav Terno
