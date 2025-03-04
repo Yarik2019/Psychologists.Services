@@ -6,7 +6,7 @@ The Psychological Services App is a web application designed to help users conne
 
 ## ✨ Key Features
 
-###🏠 Home Page
+### 🏠 Home Page
 
 A welcoming interface displaying the company's slogan.
 
