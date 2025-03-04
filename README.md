@@ -1,18 +1,18 @@
-🧠 Psychological Services App
+# 🧠 Psychological Services App
 
-📌 Project Overview
+## 📌 Project Overview
 
 The Psychological Services App is a web application designed to help users connect with professional psychologists. The app provides a platform where users can browse a list of psychologists, sort them based on different criteria, save favorites, and book consultations.
 
-✨ Key Features
+## ✨ Key Features
 
-🏠 Home Page
+###🏠 Home Page
 
 A welcoming interface displaying the company's slogan.
 
 A call-to-action button that directs users to the list of available psychologists.
 
-📋 Psychologists Page
+### 📋 Psychologists Page
 
 Displays a list of psychologists with key details such as name, experience, specialization, price per hour, and rating.
 
@@ -22,7 +22,7 @@ A "Load more" button to fetch additional psychologists from the database.
 
 Ability to view more details about each psychologist by clicking "Read more."
 
-❤️ Favorites Page (Private)
+### ❤️ Favorites Page (Private)
 
 Accessible only to authenticated users.
 
@@ -30,7 +30,7 @@ Displays psychologists marked as favorites.
 
 Users can remove psychologists from favorites.
 
-🔐 Authentication
+### 🔐 Authentication
 
 User registration and login using Firebase Authentication.
 
