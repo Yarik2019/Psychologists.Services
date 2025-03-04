@@ -83,7 +83,7 @@ ESLint & Prettier – for code formatting and quality assurance.
 ### 1️⃣ Clone the Repository
 
 ```sh
-git clone git@github.com:DimaOstapchuk91/TravelTrucks.git
+git clone git@github.com:Yarik2019/Psychologists.Services.git
 cd TravelTrucks
 ```
 
