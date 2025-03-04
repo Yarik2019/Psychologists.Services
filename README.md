@@ -1,66 +1,115 @@
-# TravelTrucks Frontend
+🧠 Psychological Services App
 
-## 🚐 Project Overview
-TravelTrucks is a frontend web application designed for a camper rental company. The app allows users to browse available campers, view detailed information, read user reviews, and book campers online.
+📌 Project Overview
 
----
+The Psychological Services App is a web application designed to help users connect with professional psychologists. The app provides a platform where users can browse a list of psychologists, sort them based on different criteria, save favorites, and book consultations.
 
-## ✨ Key Features
+✨ Key Features
 
-### 🏠 Home Page
-- Welcoming design introducing the company and its services.
-- Call-to-action button to explore the camper catalog.
+🏠 Home Page
 
-### 📜 Catalog Page
-- Displays a list of available campers with images, prices, and key features.
-- Filtering and sorting options for easy navigation.
+A welcoming interface displaying the company's slogan.
 
-### 🔍 Camper Details Page
-- Detailed description of the selected camper.
-- User reviews section.
-- Booking form for reservations.
+A call-to-action button that directs users to the list of available psychologists.
 
----
+📋 Psychologists Page
 
-## 🛠 Technologies Used
-- **React** – for building the user interface.
-- **React Router** – for managing page navigation.
-- **Redux Toolkit** – for state management.
-- **Axios** – for making API requests.
-- **Tailwind CSS** – for responsive and utility-first styling.
-- **Framer Motion** – for animations and transitions.
-- **ESLint & Prettier** – for code quality and formatting.
+Displays a list of psychologists with key details such as name, experience, specialization, price per hour, and rating.
 
----
+Sorting options to arrange psychologists by name, price, or popularity.
 
-## 🏗 Installation Instructions
+A "Load more" button to fetch additional psychologists from the database.
 
-### 1️⃣ Clone the Repository
-```sh
-git clone git@github.com:DimaOstapchuk91/TravelTrucks.git
-cd TravelTrucks
-```
+Ability to view more details about each psychologist by clicking "Read more."
 
-### 2️⃣ Install Dependencies and Run
-```sh
+❤️ Favorites Page (Private)
+
+Accessible only to authenticated users.
+
+Displays psychologists marked as favorites.
+
+Users can remove psychologists from favorites.
+
+🔐 Authentication
+
+User registration and login using Firebase Authentication.
+
+Secure data retrieval for authenticated users.
+
+Logout functionality.
+
+📦 Firebase Integration
+
+Psychologists' data stored in Firebase Realtime Database.
+
+Users' favorite psychologists stored in Firebase or localStorage.
+
+Authentication management via Firebase Authentication.
+
+📅 Appointment Booking
+
+A modal form to book an appointment with a psychologist.
+
+Form validation using react-hook-form & yup.
+
+Modal closes on clicking outside, pressing Esc, or clicking the close button.
+
+🌐 Routing
+
+Implemented using React Router.
+
+Protected routes for private pages (e.g., Favorites).
+
+🛠 Technologies Used
+
+React – for building the user interface.
+
+React Router – for managing navigation.
+
+Redux Toolkit – for state management.
+
+Firebase – for authentication and database storage.
+
+react-hook-form & yup – for form handling and validation.
+
+Axios – for making API requests.
+
+Styled Components / Tailwind CSS / Material UI – for styling.
+
+ESLint & Prettier – for code formatting and quality assurance.
+
+🏗 Installation Instructions
+
+1️⃣ Clone the Repository
+
+git clone https://github.com/yourusername/psychological-services-app.git
+cd psychological-services-app
+
+2️⃣ Install Dependencies and Run
+
 npm install
 npm run dev
-```
 
-The application will be accessible at:  
-👉 **http://localhost:5173**
+The application will be accessible at:👉 http://localhost:5173
 
----
+📖 How to Use
 
-## 📖 How to Use
-1. Open the **Home Page** to get an overview of the company.
-2. Visit the **Catalog Page** to browse through available campers with sorting and filtering options.
-3. Click on a camper to view its **Details Page**, read reviews, and fill out the booking form.
+Visit the Home Page to learn about the service.
 
----
+Go to the Psychologists Page to browse available professionals and sort them based on your preference.
 
-## 👤 Author
-**Name:** Yaroslav Terno
-📧 **Email:** yroslavterno@gmail.com 
-🔗 **LinkedIn:** [Yaroslav Terno](https://www.linkedin.com/in/yaroslav-terno)  
+Click Read More for detailed information about a psychologist.
 
+If authenticated, click the heart icon to add psychologists to Favorites.
+
+Click Make an Appointment to schedule a session.
+
+Navigate to the Favorites Page to review saved psychologists.
+
+🚀 Deployment
+
+The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
+
+👤 Author
+
+Name: Yaroslav Terno📧 Email: yroslavterno@gmail.com🔗 LinkedIn: Yaroslav Terno
