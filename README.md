@@ -120,6 +120,9 @@ The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
  📄 Technical Specification (TЗ): [Google Docs](https://docs.google.com/document/d/1PrTxBn6HQbb0Oz17g5_zvyLGIOZg0TIP3HPaEEp6ZLs/edit?tab=t.0)
 
 ## 👤 Author
-**Name:** Yaroslav Terno
+**Name:** Yaroslav Terno  
+
 📧 **Email:** yroslavterno@gmail.com 
+
 🔗 **LinkedIn:** [Yaroslav Terno](https://www.linkedin.com/in/yaroslav-terno)  
+
