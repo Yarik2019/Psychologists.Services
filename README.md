@@ -38,7 +38,7 @@ Secure data retrieval for authenticated users.
 
 Logout functionality.
 
-📦 Firebase Integration
+## 📦 Firebase Integration
 
 Psychologists' data stored in Firebase Realtime Database.
 
@@ -46,7 +46,7 @@ Users' favorite psychologists stored in Firebase or localStorage.
 
 Authentication management via Firebase Authentication.
 
-📅 Appointment Booking
+## 📅 Appointment Booking
 
 A modal form to book an appointment with a psychologist.
 
@@ -54,13 +54,13 @@ Form validation using react-hook-form & yup.
 
 Modal closes on clicking outside, pressing Esc, or clicking the close button.
 
-🌐 Routing
+## 🌐 Routing
 
 Implemented using React Router.
 
 Protected routes for private pages (e.g., Favorites).
 
-🛠 Technologies Used
+## 🛠 Technologies Used
 
 React – for building the user interface.
 
@@ -78,21 +78,21 @@ Styled Components / Tailwind CSS / Material UI – for styling.
 
 ESLint & Prettier – for code formatting and quality assurance.
 
-🏗 Installation Instructions
+## 🏗 Installation Instructions
 
-1️⃣ Clone the Repository
+### 1️⃣ Clone the Repository
 
 git clone https://github.com/yourusername/psychological-services-app.git
 cd psychological-services-app
 
-2️⃣ Install Dependencies and Run
+### 2️⃣ Install Dependencies and Run
 
 npm install
 npm run dev
 
 The application will be accessible at:👉 http://localhost:5173
 
-📖 How to Use
+## 📖 How to Use
 
 Visit the Home Page to learn about the service.
 
@@ -106,10 +106,10 @@ Click Make an Appointment to schedule a session.
 
 Navigate to the Favorites Page to review saved psychologists.
 
-🚀 Deployment
+## 🚀 Deployment
 
 The project is deployed on GitHub Pages / Netlify / Vercel:🔗 Live Demo
 
-👤 Author
+## 👤 Author
 
 Name: Yaroslav Terno📧 Email: yroslavterno@gmail.com🔗 LinkedIn: Yaroslav Terno
