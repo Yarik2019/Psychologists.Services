@@ -1,10 +1,10 @@
-import { NavLink } from "react-router-dom";
+import Header from "../../components/Header/Header";
 
 const HomePage = () => {
   return (
-    <div>
-      <NavLink to="/about">About</NavLink>
-      Home Page
+    <div className="bg-primary-color-light">
+      <Header />
+      <p className="font-quantico text-text-color">Hello world!</p>
     </div>
   );
 };
