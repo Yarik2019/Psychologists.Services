@@ -7,7 +7,7 @@ const Header = () => {
     <header className="fixed z-50 bg-gray-100 border-b-[1px] border-[rgba(25, 26, 21, 0.1)] w-full">
       <div className="container-width container-px container-py flex flex-1 gap-10 items-center justify-between">
         <NavLink
-          className="text-primary-color text-xl font-inter font-bold leading-[1.2]"
+          className="text-primary-color text-xl font-inter font-bold leading-[1.2] transition-all duration-300"
           to="/"
         >
           psychologists.<span className="text-black">services</span>
