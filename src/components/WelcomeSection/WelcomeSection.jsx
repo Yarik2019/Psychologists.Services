@@ -3,11 +3,11 @@ import sprite from "../../assets/icons.svg";
 import { NavLink } from "react-router-dom";
 const WelcomeSection = () => {
   return (
-    <div className="relative z-40 glow-gradient">
-      <div className="relative z-40 container-width container-px">
-        <div className="flex flex-col items-center xl:flex-row gap-[125px]">
+    <div className="">
+      <div className="relative  z-40 container-width container-px">
+        <div className="flex flex-col items-center xl:flex-row gap-16 lg:gap-[125px]">
           <div className="mt-12">
-            <h1 className="max-w-[595px] text-[80px] mb-5  font-inter font-semibold text-black leading-none">
+            <h1 className="max-w-[595px] text-6xl md:text-[80px] mb-5  font-inter font-semibold text-black leading-none">
               The road to the <br />
               <span className="text-primary-color italic transition-all duration-300">
                 depths
@@ -67,7 +67,7 @@ const WelcomeSection = () => {
           </div>
         </div>
       </div>
-      <div className="absolute z-0 bottom-0  right-0 w-[369px] h-[190px] bg-primary-color blur-[500px] transition-all duration-300"></div>
+      {/* <div className="absolute z-0 bottom-0  right-0 w-[369px] h-[290px] bg-primary-color blur-[500px] transition-all duration-300"></div> */}
     </div>
   );
 };

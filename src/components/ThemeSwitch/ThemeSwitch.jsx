@@ -19,7 +19,7 @@ const ThemeSwitch = () => {
     <div className="fixed flex w-10 h-10  bottom-2 right-2">
       <button
         onClick={toggleVisibility}
-        className={`absolute z-10 w-10 h-10 rounded-full focus:outline-none shadow-inner overflow-hidden ${
+        className={`absolute z-50 w-10 h-10 rounded-full focus:outline-none shadow-inner overflow-hidden ${
           isVisible ? "scale-110" : ""
         }`}
         style={{ backgroundColor: theme, borderColor: "#000" }}
