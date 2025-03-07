@@ -11,7 +11,7 @@ const WelcomeSection = () => {
   }, [theme]);
   return (
     <div className="container-width container-px relative  before:absolute before:bottom-0 before:right-0 before:bg-primary-color before:blur-[700px] before:w-100 before:h-100 transition-all duration-100">
-      <div className="flex flex-col items-center xl:flex-row gap-4 md:gap-16 lg:gap-[125px]">
+      <div className=" flex flex-col items-center xl:flex-row gap-4 md:gap-16 lg:gap-[125px]">
         <div className="mt-18 md:mt-12">
           <h1 className="w-full lg:max-w-[595px] text-3xl md:text-[80px] mb-3 lg:mb-5 font-inter font-semibold text-black leading-none">
             The road to the <br />
@@ -51,14 +51,14 @@ const WelcomeSection = () => {
                 </svg>
               </div>
             </div>
-            <div className="relative max-w-[464px] h-auto md:h-[526px]">
+            <div className="relative z-[1] max-w-[464px] h-auto md:h-[526px]">
               <img
                 className="rounded-[10px] object-cover"
                 src={`${homeImage}`}
                 alt=""
               />
             </div>
-            <div className="absolute bottom-5 md:bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 md:w-[311px] p-4 md:p-8 bg-primary-color rounded-[20px] transition-all duration-300">
+            <div className="absolute z-10 bottom-5 md:bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 md:w-[311px] p-4 md:p-8 bg-primary-color rounded-[20px] transition-all duration-300">
               <div className="w-[54px] h-[54px] flex justify-center items-center bg-white rounded-[13px] transition-all duration-300">
                 <svg className="w-[30px] h-[30px] fill-primary-color transition-all duration-300">
                   <use href={`${sprite}#icon-fe_check`}></use>
