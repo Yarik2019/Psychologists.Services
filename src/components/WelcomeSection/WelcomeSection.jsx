@@ -8,7 +8,6 @@ const WelcomeSection = () => {
 
   useEffect(() => {
     document.documentElement.style.setProperty("--color-primary", theme);
-    window.uploadi();
   }, [theme]);
   return (
     <div className="container-width container-px transition-all duration-100">
