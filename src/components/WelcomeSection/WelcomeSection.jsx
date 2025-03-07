@@ -3,7 +3,7 @@ import sprite from "../../assets/icons.svg";
 import { NavLink } from "react-router-dom";
 const WelcomeSection = () => {
   return (
-    <div className="relative z-40 container-width container-px">
+    <div className="container-width container-px relative  before:absolute before:bottom-0 before:right-0 before:bg-primary-color before:blur-[700px] before:w-100 before:h-100 transition-all duration-300">
       <div className="flex flex-col items-center xl:flex-row gap-4 md:gap-16 lg:gap-[125px]">
         <div className="mt-18 md:mt-12">
           <h1 className="w-full lg:max-w-[595px] text-3xl md:text-[80px] mb-3 lg:mb-5 font-inter font-semibold text-black leading-none">
