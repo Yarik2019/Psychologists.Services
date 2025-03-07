@@ -4,8 +4,8 @@ import { NavLink } from "react-router-dom";
 const WelcomeSection = () => {
   return (
     <div className="relative z-40 container-width container-px">
-      <div className="flex flex-col items-center xl:flex-row gap-16 lg:gap-[125px]">
-        <div className="mt-12">
+      <div className="flex flex-col items-center xl:flex-row gap-4 md:gap-16 lg:gap-[125px]">
+        <div className="mt-18 md:mt-12">
           <h1 className="w-full lg:max-w-[595px] text-3xl md:text-[80px] mb-3 lg:mb-5 font-inter font-semibold text-black leading-none">
             The road to the <br />
             <span className="text-primary-color italic transition-all duration-300">
@@ -33,7 +33,7 @@ const WelcomeSection = () => {
         <div>
           <div className="relative">
             <div>
-              <div className="absolute z-10 w-10 h-10 flex justify-center -rotate-15 translate-y-[185px]  translate-x-[-5px]  md:translate-x-[-33px] items-center bg-primary-color-question rounded-[10px] transition-all duration-300">
+              <div className="absolute z-10 w-10 h-10 flex justify-center -rotate-15 translate-y-[80px] md:translate-y-[185px]  translate-x-[-5px]  md:translate-x-[-33px] items-center bg-primary-color-question rounded-[10px] transition-all duration-300">
                 <svg className="w-4 h-4 fill-white rotate-15">
                   <use href={`${sprite}#icon-solid_question`}></use>
                 </svg>
@@ -44,10 +44,14 @@ const WelcomeSection = () => {
                 </svg>
               </div>
             </div>
-            <div className="relative w-[464px] h-[526px]">
-              <img className="rounded-[10px]" src={`${homeImage}`} alt="" />
+            <div className="relative max-w-[464px] h-auto md:h-[526px]">
+              <img
+                className="rounded-[10px] object-cover"
+                src={`${homeImage}`}
+                alt=""
+              />
             </div>
-            <div className="absolute bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 w-[311px] p-8 bg-primary-color rounded-[20px] transition-all duration-300">
+            <div className="absolute bottom-5 md:bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 md:w-[311px] p-4 md:p-8 bg-primary-color rounded-[20px] transition-all duration-300">
               <div className="w-[54px] h-[54px] flex justify-center items-center bg-white rounded-[13px] transition-all duration-300">
                 <svg className="w-[30px] h-[30px] fill-primary-color transition-all duration-300">
                   <use href={`${sprite}#icon-fe_check`}></use>
