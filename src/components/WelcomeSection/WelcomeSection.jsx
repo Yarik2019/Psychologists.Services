@@ -1,14 +1,14 @@
-import { useContext, useEffect } from "react";
+// import { useContext, useEffect } from "react";
 import { homeImage } from "../../assets/ImportImages";
 import sprite from "../../assets/icons.svg";
 import { NavLink } from "react-router-dom";
-import { ThemeContext } from "../../contexts/ThemeContext";
+// import { ThemeContext } from "../../contexts/ThemeContext";
 const WelcomeSection = () => {
-  const { theme } = useContext(ThemeContext);
+  // const { theme } = useContext(ThemeContext);
 
-  useEffect(() => {
-    document.documentElement.style.setProperty("--color-primary", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   document.documentElement.style.setProperty("--color-primary", theme);
+  // }, [theme]);
   return (
     <div className="container-width container-px transition-all duration-100">
       <div className=" flex flex-col items-center xl:flex-row gap-4 md:gap-16 lg:gap-[125px]">
@@ -79,8 +79,8 @@ const WelcomeSection = () => {
 
       {/* Фон з ефектом blur */}
       <div
-        className="absolute z-0 bottom-0 right-0 w-[300px] h-[300px] blur-[500px] "
-        style={{ backgroundColor: theme }}
+        className="absolute z-0 bottom-0 right-0 w-[300px] h-[300px] bg-primary-color blur-[500px]"
+        // style={{ backgroundColor: theme }}
       ></div>
     </div>
   );
