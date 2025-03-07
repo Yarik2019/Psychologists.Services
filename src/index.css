@@ -6,11 +6,16 @@
   --white: #fbfbfb;
   --primary-bg-white: #f3f3f3;
   --primary-color-gray: #8a8a89;
-  --primary-color: #000000; /* Значення за замовчуванням */
-  --primary-color-hover: #000000; /* Значення за замовчуванням */
-  --primary-color-light: rgba(0, 0, 0, 0.2); /* Значення за замовчуванням */
-  --primary-color-question: #000000; /* Значення за замовчуванням */
-  --primary-color-users: #000000; /* Значення за замовчуванням */
+  --primary-color: #54be96; /* Значення за замовчуванням */
+  --primary-color-hover: #36a379; /* Значення за замовчуванням */
+  --primary-color-light: rgba(
+    84,
+    190,
+    150,
+    0.2
+  ); /* Значення за замовчуванням */
+  --primary-color-question: #4535af; /* Значення за замовчуванням */
+  --primary-color-users: #fbc75e; /* Значення за замовчуванням */
   --primary-color-star: #ffc531;
   --inter: "Inter", sans-serif;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);

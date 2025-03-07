@@ -79,7 +79,7 @@ const WelcomeSection = () => {
 
       {/* Фон з ефектом blur */}
       <div
-        className="absolute z-0 bottom-0 right-0 w-[300px] h-[300px] blur-[500px] transition-all duration-300"
+        className="absolute z-0 bottom-0 right-0 w-[300px] h-[300px] blur-[500px] "
         style={{ backgroundColor: theme }}
       ></div>
     </div>
