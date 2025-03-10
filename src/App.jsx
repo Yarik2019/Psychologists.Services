@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import Layout from "./components/Layout/Layout";
 import { RestrictedRoute } from "./components/RestrictedRoute/RestrictedRoute";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
+import ReviewsPage from "./pages/ReviewsPage/ReviewsPage";
 
 function App() {
   return (
@@ -30,8 +31,9 @@ function App() {
                 redirectTo="/"
               />
             }
-          />
-
+          >
+            <Route path="psychologists/:id/reviews" element={<ReviewsPage />} />
+          </Route>
           <Route
             path="/features"
             element={

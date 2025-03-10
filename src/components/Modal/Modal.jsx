@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import { useEffect } from "react";
 
 const Modal = ({ isOpen, onClose, children }) => {
@@ -18,19 +18,18 @@ const Modal = ({ isOpen, onClose, children }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.classList.remove("noScroll");
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose]); // Ensure no unnecessary re-renders
 
-  return ReactDOM.createPortal(
-    <div className="backdrop">
+  if (!isOpen) return null; // If modal is not open, return null to prevent rendering
+  return (
+    <div className="backdrop" onClick={onClose}>
       <div className="window" onClick={(e) => e.stopPropagation()}>
         <button className="closeButton" onClick={onClose}>
           &times;
         </button>
         {children}
       </div>
-    </div>,
-    document.getElementById("modal-root")
+    </div>
   );
 };
-
 export default Modal;

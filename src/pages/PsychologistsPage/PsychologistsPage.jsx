@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom";
+import PsychologisList from "../../components/PsychologisList/PsychologisList";
 
 const PsychologistsPage = () => {
   return (
-    <div className="pt-40">
-      <NavLink to="/">Home</NavLink>
-      PsychologistsPage{" "}
+    <div className="container-width container-px pt-40 pb-[100px]">
+      <PsychologisList />
     </div>
   );
 };
