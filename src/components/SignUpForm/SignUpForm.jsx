@@ -1,23 +1,19 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import { orderSchemaReg } from "../../utils/formValidation";
+import icons from "../../assets/icons.svg";
 
 const SignUpForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const toggleRepeatPasswordVisibility = () => {
-    setRepeatPasswordVisible(!repeatPasswordVisible);
-  };
-
   const initForm = {
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
@@ -40,8 +36,34 @@ const SignUpForm = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched, isSubmitting }) => (
-          <Form className="">
+          <Form>
             <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
+              {/* Name Field */}
+              <div className="flex flex-col">
+                <Field
+                  name="name"
+                  type="text"
+                  id="name"
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
+                  ${
+                    touched.name
+                      ? errors.name
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-green-500 focus:ring-green-300"
+                      : "border-gray-300 focus:ring-blue-300"
+                  }`}
+                  placeholder="Name"
+                  required
+                  autoComplete="name" // Added autocomplete for name
+                />
+                <ErrorMessage
+                  className="text-red-500 text-sm mt-1"
+                  name="name"
+                  component="p"
+                />
+              </div>
+
+              {/* Email Field */}
               <div className="flex flex-col">
                 <Field
                   name="email"
@@ -57,6 +79,7 @@ const SignUpForm = () => {
                   }`}
                   placeholder="Email"
                   required
+                  autoComplete="email" // Added autocomplete for email
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -65,6 +88,7 @@ const SignUpForm = () => {
                 />
               </div>
 
+              {/* Password Field */}
               <div className="flex flex-col">
                 <div className="relative">
                   <Field
@@ -81,19 +105,21 @@ const SignUpForm = () => {
                     }`}
                     placeholder="Password"
                     required
+                    autoComplete="new-password" // Added autocomplete for password
                   />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                     onClick={togglePasswordVisibility}
+                    aria-label="Toggle Password Visibility"
                   >
                     {passwordVisible ? (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye`} />
+                      <svg width="15" height="15" className="text-red-500">
+                        <use href={`${icons}#icon-eye`} />
                       </svg>
                     ) : (
                       <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye-off`} />
+                        <use href={`${icons}#icon-eye_off`} />
                       </svg>
                     )}
                   </button>
@@ -104,48 +130,9 @@ const SignUpForm = () => {
                   component="p"
                 />
               </div>
-
-              <div className="flex flex-col">
-                <div className="relative">
-                  <Field
-                    name="confirmPassword"
-                    type={repeatPasswordVisible ? "text" : "password"}
-                    id="confirmPassword"
-                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                    ${
-                      touched.confirmPassword
-                        ? errors.confirmPassword
-                          ? "border-red-500 focus:ring-red-300"
-                          : "border-green-500 focus:ring-green-300"
-                        : "border-gray-300 focus:ring-blue-300"
-                    }`}
-                    placeholder="Confirm Password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                    onClick={toggleRepeatPasswordVisibility}
-                  >
-                    {repeatPasswordVisible ? (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye`} />
-                      </svg>
-                    ) : (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye-off`} />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-                <ErrorMessage
-                  className="text-red-500 text-sm mt-1"
-                  name="confirmPassword"
-                  component="p"
-                />
-              </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}

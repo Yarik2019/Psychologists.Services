@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useToggle } from "../../hooks/useToggle";
 import SignInForm from "../SignInForm/SignInForm";
 import SignUpForm from "../SignUpForm/SignUpForm";
+import { useAuth } from "../../hooks/useAuth"; // Імпортуємо useAuth
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
+  const { user, logout } = useAuth(); // Отримуємо стан користувача через useAuth, також додано logout
+  const navigate = useNavigate();
+  const navItems = [
+    { text: "Home", link: "/" },
+    { text: "Psychologists", link: "/psychologists" },
+    user ? { text: "Features", link: "/features" } : null, // Показуємо "Features" тільки якщо користувач авторизований
+  ].filter(Boolean); // Фільтруємо null значення, щоб не додавати "Features", якщо користувач не авторизований
 
   const {
     isOpen: isSignUpOpen,
@@ -18,6 +26,14 @@ const Header = () => {
     openModel: openLogIn,
     closeModel: closeLogIn,
   } = useToggle();
+
+  // Якщо не авторизований користувач намагається перейти на Features, відкриваємо модальне вікно для входу
+  useEffect(() => {
+    if (!user && window.location.pathname === "/features") {
+      openLogIn(); // Відкриваємо модальне вікно для входу
+      navigate("/"); // Перенаправляємо на головну сторінку
+    }
+  }, [user, navigate, openLogIn]);
 
   return (
     <header className="fixed z-50 bg-gray-100 border-b-[1px] border-[rgba(25, 26, 21, 0.1)] w-full">
@@ -72,10 +88,10 @@ const Header = () => {
           ${isMenu ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
         >
           <ul className="flex flex-col lg:flex-row lg:items-center lg:gap-10 w-full lg:w-auto">
-            {["Home", "Psychologists", "Favorites"].map((text, index) => (
+            {navItems.map(({ text, link }, index) => (
               <li key={index} className="w-full lg:w-auto text-center">
                 <NavLink
-                  to={`/${text.toLowerCase()}`}
+                  to={link}
                   className={({ isActive }) =>
                     `relative flex justify-center p-3 lg:p-0 text-base leading-tight text-black font-normal 
                     before:absolute before:bottom-0 lg:before:bottom-[-10px] before:left-1/2 before:-translate-x-1/2 
@@ -95,43 +111,69 @@ const Header = () => {
 
           {/* Mobile buttons */}
           <ul className="flex gap-4 lg:hidden">
-            <li>
-              <button
-                onClick={openLogIn}
-                className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-              >
-                Log In
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={openSignUp}
-                className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
-              >
-                Registration
-              </button>
-            </li>
+            {!user ? (
+              <>
+                <li>
+                  <button
+                    onClick={openLogIn}
+                    className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
+                  >
+                    Log In
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={openSignUp}
+                    className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
+                  >
+                    Registration
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <button
+                  onClick={logout} // Викликаємо logout для виходу з системи
+                  className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
+                >
+                  Log Out
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
 
         {/* Desktop buttons */}
         <ul className="hidden gap-4 lg:flex">
-          <li>
-            <button
-              onClick={openLogIn}
-              className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-            >
-              Log In
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={openSignUp}
-              className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
-            >
-              Registration
-            </button>
-          </li>
+          {!user ? (
+            <>
+              <li>
+                <button
+                  onClick={openLogIn}
+                  className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
+                >
+                  Log In
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={openSignUp}
+                  className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
+                >
+                  Registration
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <button
+                onClick={logout} // Викликаємо logout для виходу з системи
+                className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
+              >
+                Log Out
+              </button>
+            </li>
+          )}
         </ul>
       </div>
 

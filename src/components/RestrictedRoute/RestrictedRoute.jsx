@@ -1,9 +1,13 @@
-// import { Navigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { selectIsLoggedIn } from "../../redux/user/selectors.js";
-// redirectTo;
-export const RestrictedRoute = ({ component: Component }) => {
-  //   const isLoggedIn = useSelector(selectIsLoggedIn);
-  return Component;
-  //   return isLoggedIn ? <Navigate to={redirectTo} /> : Component;
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+
+export const RestrictedRoute = ({ component: Component, redirectTo }) => {
+  const { user, loading } = useAuth();
+
+  // Показуємо завантаження, якщо все ще перевіряється стан аутентифікації
+  if (loading) {
+    return <div>Loading...</div>; // або компонент для завантаження
+  }
+
+  return user ? <Navigate to={redirectTo} /> : Component;
 };

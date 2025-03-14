@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
-import { orderSchemaLogin } from "../../utils/formValidation";
+import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
+import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
 
 const SignInForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -13,10 +14,12 @@ const SignInForm = () => {
     email: "",
     password: "",
   };
+
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
     setSubmitting(false);
   };
+
   return (
     <div>
       <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
@@ -32,8 +35,9 @@ const SignInForm = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched, isSubmitting }) => (
-          <Form className="">
+          <Form>
             <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
+              {/* Email Field */}
               <div className="flex flex-col">
                 <Field
                   name="email"
@@ -49,6 +53,7 @@ const SignInForm = () => {
                   }`}
                   placeholder="Email"
                   required
+                  autoComplete="email" // Додаємо атрибут autocomplete для email
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -57,6 +62,7 @@ const SignInForm = () => {
                 />
               </div>
 
+              {/* Password Field */}
               <div className="flex flex-col">
                 <div className="relative">
                   <Field
@@ -73,6 +79,7 @@ const SignInForm = () => {
                     }`}
                     placeholder="Password"
                     required
+                    autoComplete="current-password" // Додаємо атрибут autocomplete для password
                   />
                   <button
                     type="button"
@@ -80,12 +87,12 @@ const SignInForm = () => {
                     onClick={togglePasswordVisibility}
                   >
                     {passwordVisible ? (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye`} />
+                      <svg width="15" height="15" className="text-red-500">
+                        <use href={`${icons}#icon-eye`} />
                       </svg>
                     ) : (
                       <svg width="15" height="15" className="fill-current">
-                        <use href={`#icon-eye-off`} />
+                        <use href={`${icons}#icon-eye_off`} />
                       </svg>
                     )}
                   </button>
@@ -101,7 +108,7 @@ const SignInForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4  bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
+              className="w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
             >
               {isSubmitting ? "Signing In..." : "Sign In"}
             </button>

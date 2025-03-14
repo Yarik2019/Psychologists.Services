@@ -1,10 +1,14 @@
-// import { Navigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { selectIsLoggedIn } from "../../redux/user/selectors.js";
-// redirectTo
-export const PrivateRoute = ({ component: Component }) => {
-  //   const isLoggedIn = useSelector(selectIsLoggedIn);
-  //   return isLoggedIn ? Component : <Navigate to={redirectTo} />;
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
-  return Component;
+export const PrivateRoute = ({ children, redirectTo }) => {
+  const { user, loading } = useAuth();
+
+  // Показуємо завантаження, якщо все ще перевіряється стан аутентифікації
+  if (loading) {
+    return <div>Loading...</div>; // або компонент для завантаження
+  }
+
+  return user ? children : <Navigate to={redirectTo} />;
 };
+  
