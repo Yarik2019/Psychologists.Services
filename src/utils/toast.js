@@ -31,19 +31,3 @@ export const successfullyToast = (message) => {
     icon: "✅",
   });
 };
-
-export const velcomeToast = (message) => {
-  toast.success(`${message}`, {
-    duration: 4000,
-    position: "top-right",
-    style: {
-      borderRadius: "12px",
-      background: "#e6f7ff",
-      color: "#0288d1",
-      border: "1px solid #0288d1",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
-      padding: "12px 16px",
-    },
-    icon: "👋",
-  });
-};

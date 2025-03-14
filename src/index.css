@@ -138,7 +138,7 @@ button {
 
 .window {
   position: relative;
-  padding: 64px;
+  padding: 12px;
   background-color: var(--white);
   border-radius: 16px;
   box-shadow: 0 8px 20px var(--modal-backdrop);
@@ -146,6 +146,17 @@ button {
   margin: 0 auto;
   transform: scale(0.9);
   animation: showModal 0.3s ease-out forwards;
+}
+
+@media (min-width: 768px) {
+  .window {
+    padding: 32px;
+  }
+}
+@media (min-width: 1440px) {
+  .window {
+    padding: 64px;
+  }
 }
 @keyframes showModal {
   from {

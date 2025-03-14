@@ -2,6 +2,8 @@
 import { homeImage } from "../../assets/ImportImages";
 import sprite from "../../assets/icons.svg";
 import { NavLink } from "react-router-dom";
+// import { firebaseConfig } from "../../service/firebase";
+
 // import { ThemeContext } from "../../contexts/ThemeContext";
 const WelcomeSection = () => {
   // const { theme } = useContext(ThemeContext);

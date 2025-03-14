@@ -13,15 +13,16 @@ const SignInForm = () => {
     email: "",
     password: "",
   };
-  const handleSubmit = (values) => {
+  const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
+    setSubmitting(false);
   };
   return (
     <div>
-      <h2 className="text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
+      <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
         Log In
       </h2>
-      <p className="text-base mb-10 text-black/50 font-inter  leading-tight">
+      <p className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight">
         Welcome back! Please enter your credentials to access your account and
         continue your search for a psychologist.
       </p>
@@ -30,110 +31,83 @@ const SignInForm = () => {
         validationSchema={orderSchemaLogin}
         onSubmit={handleSubmit}
       >
-        {/* {({ errors, touched }) => (
-          <Form className={styles.form}>
-            <div className={styles.formGroup}>
-              <label htmlFor="email" className={styles.label}></label>
-              <Field
-                name="email"
-                type="email"
-                id="email"
-                className={`${styles.input} ${
-                  touched.email
-                    ? errors.email
-                      ? styles.error
-                      : styles.success
-                    : ""
-                }`}
-                placeholder={t("signIn.enterEmail")}
-                required
-              />
-              <ErrorMessage
-                className={styles.errorMessage}
-                name="email"
-                component="p"
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="password" className={styles.label}>
-                {t("signIn.password")}
-              </label>
-              <div className={styles.passwordWrapper}>
+        {({ errors, touched, isSubmitting }) => (
+          <Form className="">
+            <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
+              <div className="flex flex-col">
                 <Field
-                  name="password"
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
-                  className={`${styles.input} ${
-                    touched.password
-                      ? errors.password
-                        ? styles.error
-                        : styles.success
-                      : ""
+                  name="email"
+                  type="email"
+                  id="email"
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
+                  ${
+                    touched.email
+                      ? errors.email
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-green-500 focus:ring-green-300"
+                      : "border-gray-300 focus:ring-blue-300"
                   }`}
-                  placeholder={t("signIn.enterPassword")}
+                  placeholder="Email"
                   required
                 />
-                <button
-                  type="button"
-                  className={styles.togglePassword}
-                  onClick={togglePasswordVisibility}
-                >
-                  {passwordVisible ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      className={`${styles.eye} ${
-                        touched.password
-                          ? errors.password
-                            ? styles.error
-                            : styles.success
-                          : ""
-                      }`}
-                    >
-                      <use href={`${sprite}#icon-eye`}></use>
-                    </svg>
-                  ) : (
-                    <svg
-                      width="15"
-                      height="15"
-                      className={`${styles.eye} ${
-                        touched.password
-                          ? errors.password
-                            ? styles.error
-                            : styles.success
-                          : ""
-                      }`}
-                    >
-                      <use href={`${sprite}#icon-eye-off`}></use>
-                    </svg>
-                  )}
-                </button>
+                <ErrorMessage
+                  className="text-red-500 text-sm mt-1"
+                  name="email"
+                  component="p"
+                />
               </div>
-              <ErrorMessage
-                className={styles.errorMessage}
-                name="password"
-                component="p"
-              />
+
+              <div className="flex flex-col">
+                <div className="relative">
+                  <Field
+                    name="password"
+                    type={passwordVisible ? "text" : "password"}
+                    id="password"
+                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
+                    ${
+                      touched.password
+                        ? errors.password
+                          ? "border-red-500 focus:ring-red-300"
+                          : "border-green-500 focus:ring-green-300"
+                        : "border-gray-300 focus:ring-blue-300"
+                    }`}
+                    placeholder="Password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {passwordVisible ? (
+                      <svg width="15" height="15" className="fill-current">
+                        <use href={`#icon-eye`} />
+                      </svg>
+                    ) : (
+                      <svg width="15" height="15" className="fill-current">
+                        <use href={`#icon-eye-off`} />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <ErrorMessage
+                  className="text-red-500 text-sm mt-1"
+                  name="password"
+                  component="p"
+                />
+              </div>
             </div>
 
             <button
               type="submit"
-              disabled={isLoading}
-              className={styles.submitButton}
+              disabled={isSubmitting}
+              className="w-full py-4  bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
             >
-              {t("signIn.signIn")}{" "}
-              {isLoading && (
-                <span className={styles.loaderBtn}>
-                  <Loader />
-                </span>
-              )}
+              {isSubmitting ? "Signing In..." : "Sign In"}
             </button>
           </Form>
-        )} */}
+        )}
       </Formik>
-      <button className="flex justify-center items-center w-full py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300">
-        Log In
-      </button>
     </div>
   );
 };
