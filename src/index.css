@@ -23,6 +23,8 @@
 
   --primary-backdrop: rgba(25, 26, 21, 0.6);
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-filter-card: 0 20px 69px 0 rgba(0, 0, 0, 0.07);
 }
 /* Зелена тема */
 :root[data-theme="green"] {
@@ -69,6 +71,8 @@
   --font-inter: var(--inter);
 
   --modal-backdrop: var(--primary-backdrop);
+
+  --shadow-filters-card: var(--shadow-filter-card)
 
   /* xl 1440рх  sm 320рх */
   --breakpoint-xs: 20rem; /* 320рх  */

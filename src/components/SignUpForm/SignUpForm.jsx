@@ -2,25 +2,36 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import { orderSchemaReg } from "../../utils/formValidation";
 import icons from "../../assets/icons.svg";
+import { errToast, successfullyToast } from "../../utils/toast";
+import { registerUser } from "../../service/authService";
+import { useNavigate } from "react-router-dom";
 
-const SignUpForm = () => {
+const SignUpForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const initForm = {
+  const initialValues = {
     name: "",
     email: "",
     password: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
-    setSubmitting(false);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await registerUser(values.name, values.email, values.password);
+      navigate("/features");
+      successfullyToast("Successful registration");
+      onClose();
+    } catch (error) {
+      errToast(`Oops, ${error.message}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
-
   return (
     <div>
       <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
@@ -31,7 +42,7 @@ const SignUpForm = () => {
         need some information. Please provide us with the following information.
       </p>
       <Formik
-        initialValues={initForm}
+        initialValues={initialValues}
         validationSchema={orderSchemaReg}
         onSubmit={handleSubmit}
       >

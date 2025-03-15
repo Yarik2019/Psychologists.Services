@@ -1,13 +1,14 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-export const RestrictedRoute = ({ component: Component, redirectTo }) => {
+export const RestrictedRoute = ({ element, redirectTo }) => {
   const { user, loading } = useAuth();
 
-  // Показуємо завантаження, якщо все ще перевіряється стан аутентифікації
+  // Show loading if authentication state is still being checked
   if (loading) {
-    return <div>Loading...</div>; // або компонент для завантаження
+    return <div>Loading...</div>;
   }
 
-  return user ? <Navigate to={redirectTo} /> : Component;
+  // If the user is authenticated, redirect to the provided redirectTo path
+  return user ? <Navigate to={redirectTo} /> : element;
 };

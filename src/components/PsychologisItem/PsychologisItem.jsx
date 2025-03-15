@@ -48,7 +48,7 @@ const PsychologisItem = ({ profile }) => {
           </div>
         </div>
         <h2 className="text-black mb-6 font-inter font-medium text-2xl leading-none">
-          Dr. Lisa Anderson
+          {profile.name}
         </h2>
         <TherapistProfile
           therapistProfile={{

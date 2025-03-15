@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-export const PrivateRoute = ({ children, redirectTo }) => {
+export const PrivateRoute = ({ element, redirectTo }) => {
   const { user, loading } = useAuth();
 
-  // Показуємо завантаження, якщо все ще перевіряється стан аутентифікації
+  // Show loading if authentication state is still being checked
   if (loading) {
-    return <div>Loading...</div>; // або компонент для завантаження
+    return <div>Loading...</div>;
   }
 
-  return user ? children : <Navigate to={redirectTo} />;
+  // If the user is not authenticated, redirect to the provided redirectTo path
+  return user ? element : <Navigate to={redirectTo} />;
 };
-  

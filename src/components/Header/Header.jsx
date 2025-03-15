@@ -1,45 +1,43 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Modal from "../Modal/Modal";
-import { useToggle } from "../../hooks/useToggle";
-import SignInForm from "../SignInForm/SignInForm";
-import SignUpForm from "../SignUpForm/SignUpForm";
-import { useAuth } from "../../hooks/useAuth"; // Імпортуємо useAuth
+import { useAuth } from "../../hooks/useAuth";
+import AuthMenu from "../AuthMenu/AuthMenu";
+import UserMenu from "../UserMenu/UserMenu";
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
-  const { user, logout } = useAuth(); // Отримуємо стан користувача через useAuth, також додано logout
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  // Загальні посилання для всіх користувачів
   const navItems = [
     { text: "Home", link: "/" },
     { text: "Psychologists", link: "/psychologists" },
-    user ? { text: "Features", link: "/features" } : null, // Показуємо "Features" тільки якщо користувач авторизований
-  ].filter(Boolean); // Фільтруємо null значення, щоб не додавати "Features", якщо користувач не авторизований
+    // Додаємо "Features" лише для авторизованих користувачів
+    ...(user ? [{ text: "Features", link: "/features" }] : []),
+  ];
 
-  const {
-    isOpen: isSignUpOpen,
-    openModel: openSignUp,
-    closeModel: closeSignUp,
-  } = useToggle();
-  const {
-    isOpen: isLogInOpen,
-    openModel: openLogIn,
-    closeModel: closeLogIn,
-  } = useToggle();
-
-  // Якщо не авторизований користувач намагається перейти на Features, відкриваємо модальне вікно для входу
+  // Перевірка авторизації при спробі переходу на Features
   useEffect(() => {
     if (!user && window.location.pathname === "/features") {
-      openLogIn(); // Відкриваємо модальне вікно для входу
       navigate("/"); // Перенаправляємо на головну сторінку
     }
-  }, [user, navigate, openLogIn]);
+  }, [user, navigate]);
+
+  // Функція для обробки переходу на Features
+  const handleNavLinkClick = (link) => {
+    if (link === "/features" && !user) {
+      navigate("/"); // Перенаправляємо на головну сторінку, якщо користувач не авторизований
+    } else {
+      navigate(link); // Інакше переходимо за посиланням
+    }
+  };
 
   return (
-    <header className="fixed z-50 bg-gray-100 border-b-[1px] border-[rgba(25, 26, 21, 0.1)] w-full">
-      <div className="container-width container-px container-py flex flex-1 gap-10 items-center justify-between">
+    <header className="fixed z-50 bg-gray-100 border-b w-full">
+      <div className="container-width container-px container-py flex items-center justify-between gap-10">
         <NavLink
-          className="text-primary-color text-xl font-inter font-bold leading-[1.2] transition-all duration-300"
+          className="text-primary-color text-xl font-bold leading-[1.2] transition-all duration-300"
           to="/"
         >
           psychologists.<span className="text-black">services</span>
@@ -83,15 +81,18 @@ const Header = () => {
         </button>
 
         <nav
-          className={`flex flex-col gap-4 justify-between items-center lg:flex lg:relative lg:bg-transparent py-3 lg:py-0
-          absolute top-14 left-0 w-full bg-gray-100 lg:top-0 lg:w-auto transition-all duration-500 ease-in-out 
-          ${isMenu ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+          className={`absolute flex flex-col gap-4.5 top-14 left-0 w-full bg-gray-100 py-3 transition-all duration-500 ease-in-out 
+          ${
+            isMenu ? "translate-x-0" : "-translate-x-full"
+          } lg:relative lg:bg-transparent lg:top-0 lg:w-auto 
+          lg:flex lg:translate-x-0 lg:py-0`}
         >
           <ul className="flex flex-col lg:flex-row lg:items-center lg:gap-10 w-full lg:w-auto">
             {navItems.map(({ text, link }, index) => (
               <li key={index} className="w-full lg:w-auto text-center">
                 <NavLink
                   to={link}
+                  onClick={() => handleNavLinkClick(link)} // Викликаємо функцію для переходу
                   className={({ isActive }) =>
                     `relative flex justify-center p-3 lg:p-0 text-base leading-tight text-black font-normal 
                     before:absolute before:bottom-0 lg:before:bottom-[-10px] before:left-1/2 before:-translate-x-1/2 
@@ -110,79 +111,16 @@ const Header = () => {
           </ul>
 
           {/* Mobile buttons */}
-          <ul className="flex gap-4 lg:hidden">
-            {!user ? (
-              <>
-                <li>
-                  <button
-                    onClick={openLogIn}
-                    className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-                  >
-                    Log In
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={openSignUp}
-                    className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
-                  >
-                    Registration
-                  </button>
-                </li>
-              </>
-            ) : (
-              <li>
-                <button
-                  onClick={logout} // Викликаємо logout для виходу з системи
-                  className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-                >
-                  Log Out
-                </button>
-              </li>
-            )}
-          </ul>
+          <div className="flex justify-center gap-4 lg:hidden">
+            {!user ? <AuthMenu /> : <UserMenu />}
+          </div>
         </nav>
 
         {/* Desktop buttons */}
-        <ul className="hidden gap-4 lg:flex">
-          {!user ? (
-            <>
-              <li>
-                <button
-                  onClick={openLogIn}
-                  className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-                >
-                  Log In
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={openSignUp}
-                  className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
-                >
-                  Registration
-                </button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <button
-                onClick={logout} // Викликаємо logout для виходу з системи
-                className="flex justify-center items-center min-w-[124px] py-3 font-medium text-base text-black leading-tight border-[1px] border-solid border-black rounded-[30px]"
-              >
-                Log Out
-              </button>
-            </li>
-          )}
-        </ul>
+        <div className="hidden gap-4 lg:flex">
+          {!user ? <AuthMenu /> : <UserMenu />}
+        </div>
       </div>
-
-      <Modal isOpen={isLogInOpen} onClose={closeLogIn}>
-        <SignInForm />
-      </Modal>
-      <Modal isOpen={isSignUpOpen} onClose={closeSignUp}>
-        <SignUpForm />
-      </Modal>
     </header>
   );
 };

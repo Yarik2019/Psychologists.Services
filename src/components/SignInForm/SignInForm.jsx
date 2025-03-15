@@ -2,9 +2,12 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
 import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
-
-const SignInForm = () => {
+import { errToast, successfullyToast } from "../../utils/toast.js";
+import { loginUser } from "../../service/authService.js";
+import { useNavigate } from "react-router-dom";
+const SignInForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -15,9 +18,15 @@ const SignInForm = () => {
     password: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
-    setSubmitting(false);
+  const handleSubmit = async (values) => {
+    try {
+      await loginUser(values.email, values.password);
+      navigate("/features");
+      successfullyToast("Successful Login");
+      onClose();
+    } catch (error) {
+      errToast(`Oops, ${error}`);
+    }
   };
 
   return (

@@ -10,7 +10,6 @@ const ReviewsAccordion = ({ reviews }) => {
 
   // Return null if no reviews are provided
   if (!reviews || reviews.length === 0) return null;
-  console.log(reviews);
   return (
     <div>
       {!isAccordion && (
