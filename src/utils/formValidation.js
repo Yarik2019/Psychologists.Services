@@ -18,6 +18,16 @@ const nameValid = Yup.string()
   .max(50, "Maximum 50 characters")
   .required("Name is required");
 
+const numberValid = Yup.string()
+  .matches(/^\+?[0-9]+$/, "Invalid phone number")
+  .required("Required");
+
+const dateValid = Yup.date()
+  .min(new Date(), "Date must be in the future")
+  .required("Required");
+
+const commentValid = Yup.string();
+
 export const orderSchemaLogin = Yup.object({
   email: emailValid,
   password: passwordValid,
@@ -27,4 +37,12 @@ export const orderSchemaReg = Yup.object({
   name: nameValid,
   email: emailValid,
   password: passwordValid,
+});
+
+export const orderSchemaRegMakeAnAppointment = Yup.object().shape({
+  name: nameValid,
+  number: numberValid,
+  date: dateValid,
+  email: emailValid,
+  comment: commentValid,
 });

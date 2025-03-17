@@ -1,8 +1,12 @@
 import { useState } from "react";
 import sprite from "../../assets/icons.svg";
-
-const ReviewsAccordion = ({ reviews }) => {
+import Modal from "../Modal/Modal";
+import { useToggle } from "../../hooks/useToggle";
+import MakeAnAppointment from "../MakeAnAppointment/MakeAnAppointment";
+const ReviewsAccordion = ({ name, avatar, reviews }) => {
   const [isAccordion, setIsAccordion] = useState(false);
+
+  const { isOpen, openModel, closeModel } = useToggle();
 
   const toggleAccordion = () => {
     setIsAccordion((prev) => !prev);
@@ -58,9 +62,15 @@ const ReviewsAccordion = ({ reviews }) => {
             ))}
           </ul>
         )}
-        <button className="flex justify-center items-center min-w-[124px] py-3.5 px-8 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300">
+        <button
+          onClick={openModel}
+          className="flex justify-center items-center min-w-[124px] py-3.5 px-8 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
+        >
           Make an appointment
         </button>
+        <Modal isOpen={isOpen} onClose={closeModel}>
+          <MakeAnAppointment name={name} avatar={avatar} />
+        </Modal>
       </div>
     </div>
   );
