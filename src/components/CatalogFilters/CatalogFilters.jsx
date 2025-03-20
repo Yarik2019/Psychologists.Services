@@ -10,7 +10,7 @@ const options = [
   { id: 7, label: "Show all", value: "all" },
 ];
 
-const PsychologistFilter = ({ onFilterChange, sortCriterion }) => {
+const CatalogFilters = ({ onFilterChange, sortCriterion }) => {
   const selectedOption =
     options.find((opt) => opt.value === sortCriterion) || options[0];
   const [selected, setSelected] = useState(selectedOption);
@@ -77,4 +77,4 @@ const PsychologistFilter = ({ onFilterChange, sortCriterion }) => {
   );
 };
 
-export default PsychologistFilter;
+export default CatalogFilters;

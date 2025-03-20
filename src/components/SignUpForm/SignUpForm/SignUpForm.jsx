@@ -1,52 +1,78 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
-import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
-import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
-import { errToast, successfullyToast } from "../../utils/toast.js";
-import { loginUser } from "../../service/authService.js";
 import { useNavigate } from "react-router-dom";
-import Loader from "../Loader/Loader.jsx";
-const SignInForm = ({ onClose }) => {
+import { useDispatch } from "react-redux";
+
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { orderSchemaReg } from "../../utils/formValidation";
+
+import { registerUser } from "../../redux/auth/operations";
+
+import Loader from "../Loader/Loader";
+import icons from "../../assets/icons.svg";
+
+const SignUpForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const initForm = {
+  const initialValues = {
+    name: "",
     email: "",
     password: "",
   };
 
   const handleSubmit = async (values) => {
-    try {
-      await loginUser(values.email, values.password);
-      navigate("/features");
-      successfullyToast("Successful Login");
-      onClose();
-    } catch (error) {
-      errToast(`Oops, ${error}`);
-    }
+    console.log(values);
+    dispatch(registerUser(values));
+    navigate("/features");
+    onClose();
   };
-
   return (
     <div>
       <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
-        Log In
+        Registration
       </h2>
       <p className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight">
-        Welcome back! Please enter your credentials to access your account and
-        continue your search for a psychologist.
+        Thank you for your interest in our platform! In order to register, we
+        need some information. Please provide us with the following information.
       </p>
       <Formik
-        initialValues={initForm}
-        validationSchema={orderSchemaLogin}
+        initialValues={initialValues}
+        validationSchema={orderSchemaReg}
         onSubmit={handleSubmit}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
             <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
+              {/* Name Field */}
+              <div className="flex flex-col">
+                <Field
+                  name="name"
+                  type="text"
+                  id="name"
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
+                  ${
+                    touched.name
+                      ? errors.name
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-green-500 focus:ring-green-300"
+                      : "border-gray-300 focus:ring-blue-300"
+                  }`}
+                  placeholder="Name"
+                  required
+                  autoComplete="name" // Added autocomplete for name
+                />
+                <ErrorMessage
+                  className="text-red-500 text-sm mt-1"
+                  name="name"
+                  component="p"
+                />
+              </div>
+
               {/* Email Field */}
               <div className="flex flex-col">
                 <Field
@@ -63,7 +89,7 @@ const SignInForm = ({ onClose }) => {
                   }`}
                   placeholder="Email"
                   required
-                  autoComplete="email" // Додаємо атрибут autocomplete для email
+                  autoComplete="email" // Added autocomplete for email
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -89,12 +115,13 @@ const SignInForm = ({ onClose }) => {
                     }`}
                     placeholder="Password"
                     required
-                    autoComplete="current-password" // Додаємо атрибут autocomplete для password
+                    autoComplete="new-password" // Added autocomplete for password
                   />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                     onClick={togglePasswordVisibility}
+                    aria-label="Toggle Password Visibility"
                   >
                     {passwordVisible ? (
                       <svg width="15" height="15" className="text-red-500">
@@ -115,18 +142,19 @@ const SignInForm = ({ onClose }) => {
               </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full  py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
+              className="w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
             >
               {isSubmitting ? (
                 <span className="flex justify-center">
-                  <span>Signing In</span>{" "}
+                  <span>Signing Up</span>{" "}
                   <Loader height={20} width={20} color={"white"} />
                 </span>
               ) : (
-                "Sign In"
+                "Sign Up"
               )}
             </button>
           </Form>
@@ -136,4 +164,4 @@ const SignInForm = ({ onClose }) => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

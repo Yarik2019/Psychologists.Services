@@ -1,14 +1,17 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
-import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
-import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
-import { errToast, successfullyToast } from "../../utils/toast.js";
-import { loginUser } from "../../service/authService.js";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+
+import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
+import { loginUser } from "../../redux/auth/operations.js";
+
+import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
 import Loader from "../Loader/Loader.jsx";
 const SignInForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -20,14 +23,10 @@ const SignInForm = ({ onClose }) => {
   };
 
   const handleSubmit = async (values) => {
-    try {
-      await loginUser(values.email, values.password);
-      navigate("/features");
-      successfullyToast("Successful Login");
-      onClose();
-    } catch (error) {
-      errToast(`Oops, ${error}`);
-    }
+    console.log(values);
+    dispatch(loginUser(values));
+    navigate("/features");
+    onClose();
   };
 
   return (

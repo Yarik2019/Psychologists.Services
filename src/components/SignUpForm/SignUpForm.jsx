@@ -5,6 +5,7 @@ import icons from "../../assets/icons.svg";
 import { errToast, successfullyToast } from "../../utils/toast";
 import { registerUser } from "../../service/authService";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const SignUpForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -149,7 +150,14 @@ const SignUpForm = ({ onClose }) => {
               disabled={isSubmitting}
               className="w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
             >
-              {isSubmitting ? "Signing Up..." : "Sign Up"}
+              {isSubmitting ? (
+                <span className="flex justify-center">
+                  <span>Signing Up</span>{" "}
+                  <Loader height={20} width={20} color={"white"} />
+                </span>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </Form>
         )}

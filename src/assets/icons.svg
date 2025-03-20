@@ -25,8 +25,8 @@
     <symbol id="icon-heart" viewBox="0 0 32 32">
       <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" stroke-width="2.462" d="M27.787 6.147a7.345 7.345 0 0 0-5.187-2.15 7.33 7.33 0 0 0-5.186 2.15L16.001 7.56l-1.413-1.413a7.333 7.333 0 0 0-10.374 0 7.333 7.333 0 0 0 0 10.374l11.787 11.787 11.787-11.787a7.345 7.345 0 0 0 2.15-5.187 7.33 7.33 0 0 0-2.15-5.187z"/>
     </symbol>
-    <symbol id="icon-heart" viewBox="0 0 32 32">
-      <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" stroke-width="2.462" d="M27.787 6.147a7.345 7.345 0 0 0-5.187-2.15 7.33 7.33 0 0 0-5.186 2.15L16.001 7.56l-1.413-1.413a7.333 7.333 0 0 0-10.374 0 7.333 7.333 0 0 0 0 10.374l11.787 11.787 11.787-11.787a7.345 7.345 0 0 0 2.15-5.187 7.33 7.33 0 0 0-2.15-5.187z"/>
+    <symbol id="icon-hearts" viewBox="0 0 32 32">
+      <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.462" d="M27.787 6.147a7.326 7.326 0 0 0-10.373 0L16.001 7.56l-1.413-1.413a7.333 7.333 0 0 0-10.374 0 7.333 7.333 0 0 0 0 10.374l11.787 11.787 11.787-11.787a7.326 7.326 0 0 0 0-10.373z"/>
     </symbol>
     <symbol id="icon-mdi_user" viewBox="0 0 32 32">
       <path  d="M16 5.333a5.332 5.332 0 1 1 0 10.665 5.332 5.332 0 0 1 0-10.665zm0 13.334c5.893 0 10.667 2.387 10.667 5.333v2.667H5.334V24c0-2.947 4.773-5.333 10.667-5.333z"/>
