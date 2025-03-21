@@ -96,7 +96,7 @@ const WelcomeSection = () => {
             </motion.div>
 
             <motion.div
-              className="absolute z-10 bottom-5 md:bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 md:w-[311px] p-4 md:p-8 bg-primary-color rounded-[20px] transition-all duration-300"
+              className="absolute z-10 bottom-5 md:bottom-[75px] translate-x-[-15px] md:-translate-x-[101px] flex gap-4 md:w-[312px] p-4 md:p-8 bg-primary-color rounded-[20px] transition-all duration-300"
               variants={cardVariants}
               transition={{ delay: 0.9 }}
             >
