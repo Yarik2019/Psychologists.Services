@@ -43,7 +43,7 @@ export const addToFavorites = createAsyncThunk(
   "favorites/add",
   async ({ userId, psychologist }, thunkAPI) => {
     try {
-      if (!userId) throw new Error("User не авторизований");
+      if (!userId) throw new Error("User is not authorized.");
       if (!psychologist?.id) throw new Error("Invalid psychologist data");
 
       const favoriteRef = ref(
@@ -62,7 +62,7 @@ export const removeFromFavorites = createAsyncThunk(
   "favorites/remove",
   async ({ userId, psychologistId }, thunkAPI) => {
     try {
-      if (!userId) throw new Error("User не авторизований");
+      if (!userId) throw new Error("User is not authorized.");
       if (!psychologistId) throw new Error("Psychologist ID is missing");
 
       const favoriteRef = ref(

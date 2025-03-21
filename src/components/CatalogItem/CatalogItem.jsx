@@ -39,7 +39,7 @@ const CatalogItem = ({ profile }) => {
 
   const toggleFavorite = async () => {
     if (!userAuth) {
-      errToast("Ви не зареєстровані! Увійдіть в акаунт.");
+      errToast("You are not registered! Please log in to your account.");
       navigate("/");
       return;
     }
@@ -54,17 +54,17 @@ const CatalogItem = ({ profile }) => {
             psychologistId: profile.id,
           })
         ).unwrap();
-        successfullyToast("Видалено з улюблених");
+        successfullyToast("Removed from favorites.");
       } else {
         await dispatch(
           addToFavorites({ userId: userAuth?.uid, psychologist: profile })
         ).unwrap();
-        successfullyToast("Додано в улюблені");
+        successfullyToast("Added to favorites.");
       }
 
       await dispatch(fetchFavoritesForUser(userAuth?.uid));
     } catch (error) {
-      errToast(`Помилка: ${error.message}`);
+      errToast(`Error: ${error.message}`);
     } finally {
       setLoadingFavorites(false);
     }

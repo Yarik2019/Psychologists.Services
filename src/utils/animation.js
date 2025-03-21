@@ -274,3 +274,48 @@ export const animationsForm = {
     visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
   },
 };
+
+// animationsNotFound;
+export const animationsNotFound = {
+  text: {
+    hidden: { opacity: 0, y: -10, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotate: [0, 2, -2, 0], // Легке гойдання при появі
+      transition: { duration: 1, ease: "easeOut" },
+    },
+    floating: {
+      y: [0, -3, 3, 0], // Дрейф вгору-вниз
+      transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+    },
+  },
+  number: {
+    hidden: { opacity: 0, filter: "blur(10px)", scale: 0.8 },
+    visible: {
+      opacity: 1,
+      filter: "blur(0px)",
+      scale: 1,
+      transition: { duration: 1.5, ease: "easeOut" },
+    },
+    floating: {
+      rotate: [0, 1, -1, 0], // Легке хитання числа "404"
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+    },
+  },
+  button: {
+    hover: {
+      scale: 1.1,
+      boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+      transition: { duration: 0.3 },
+    },
+  },
+  background: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 2, ease: "easeInOut" },
+    },
+  },
+};
