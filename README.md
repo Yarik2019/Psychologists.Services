@@ -72,8 +72,6 @@ Firebase – for authentication and database storage.
 
 react-hook-form & yup – for form handling and validation.
 
-Axios – for making API requests.
-
 Styled Components / Tailwind CSS / Material UI – for styling.
 
 ESLint & Prettier – for code formatting and quality assurance.
