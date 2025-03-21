@@ -22,9 +22,12 @@ const numberValid = Yup.string()
   .matches(/^\+?[0-9]+$/, "Invalid phone number")
   .required("Required");
 
-const dateValid = Yup.date()
-  .min(new Date(), "Date must be in the future")
-  .required("Required");
+const timeValid = Yup.string()
+  .oneOf(
+    ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "Invalid time slot"
+  )
+  .required("Time is required");
 
 const commentValid = Yup.string();
 
@@ -42,7 +45,7 @@ export const orderSchemaReg = Yup.object({
 export const orderSchemaRegMakeAnAppointment = Yup.object().shape({
   name: nameValid,
   number: numberValid,
-  date: dateValid,
+  time: timeValid,
   email: emailValid,
   comment: commentValid,
 });
