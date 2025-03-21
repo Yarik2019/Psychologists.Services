@@ -1,13 +1,20 @@
 import { Suspense } from "react";
 import Header from "../Header/Header";
 import { Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
+import { headerVariants } from "../../utils/animation";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div>
-      <Header />
-      <Suspense fallback={null}>{children}</Suspense>
-      <Outlet />
+      {/* Анімований заголовок */}
+      <motion.div initial="hidden" animate="visible" variants={headerVariants}>
+        <Header />
+      </motion.div>
+
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };

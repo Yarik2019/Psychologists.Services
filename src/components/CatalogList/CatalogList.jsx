@@ -1,78 +1,89 @@
-import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import useCatalogFilter from "../../hooks/useCatalogFilter.jsx";
 import CatalogItem from "../CatalogItem/CatalogItem.jsx";
 import CatalogFilters from "../CatalogFilters/CatalogFilters.jsx";
-import useCatalogFilter from "../../hooks/useCatalogFilter.jsx";
-import { v4 as uuidv4 } from "uuid";
 import Loader from "../Loader/Loader.jsx";
 
-const CatalogList = ({ fetchApi }) => {
-  const { filteredPsychologists, handleFilterChange, sortCriterion } =
-    useCatalogFilter({ fetchApi });
+import { animations } from "../../utils/animation.js";
+
+const CatalogList = ({ fetchApi, catalog }) => {
+  const { filteredPsychologists, handleFilterChange, isLoading, error } =
+    useCatalogFilter({ catalog });
 
   const [visibleCount, setVisibleCount] = useState(3);
-  const [isLoading, setIsLoading] = useState(true);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
-  const [updatedList, setUpdatedList] = useState(filteredPsychologists);
-
-  useEffect(() => {
-    setUpdatedList(filteredPsychologists);
-  }, [filteredPsychologists]);
-
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000);
-  }, []);
 
   const loadMore = () => {
     setIsLoadMoreLoading(true);
     setTimeout(() => {
-      setVisibleCount((prevCount) => prevCount + 3);
+      setVisibleCount((prev) => prev + 3);
       setIsLoadMoreLoading(false);
     }, 1000);
   };
 
   const handleFavoriteChange = async () => {
-    const updatedFavorites = await fetchApi();
-    setUpdatedList(updatedFavorites);
+    await fetchApi(); // Оновлюємо список після зміни улюблених
   };
-  console.log(updatedList);
+
   return (
     <div>
-      {updatedList.length === 0 ? (
-        <></>
-      ) : (
-        <CatalogFilters
-          onFilterChange={handleFilterChange}
-          sortCriterion={sortCriterion}
-        />
+      {filteredPsychologists.length > 0 && (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={animations.filter}
+        >
+          <CatalogFilters onFilterChange={handleFilterChange} />
+        </motion.div>
       )}
 
       {isLoading ? (
         <div className="flex justify-center mt-8">
           <Loader height={80} width={80} color={"green"} />
         </div>
-      ) : updatedList.length === 0 ? (
+      ) : error ? (
+        <div className="flex justify-center items-center h-40">
+          <p className="text-lg text-red-500">{error}</p>
+        </div>
+      ) : filteredPsychologists.length === 0 ? (
         <div className="flex justify-center items-center h-40">
           <p className="text-lg text-gray-500">No psychologists found.</p>
         </div>
       ) : (
         <>
           <ul className="flex flex-col gap-8">
-            {updatedList.slice(0, visibleCount).map((psychologist) => (
-              <li key={psychologist.id || uuidv4()}>
-                <CatalogItem
-                  profile={psychologist}
-                  onFavoriteChange={handleFavoriteChange}
-                />
-              </li>
-            ))}
+            {filteredPsychologists
+              .slice(0, visibleCount)
+              .map((psychologist, index) => (
+                <motion.li
+                  key={psychologist.id}
+                  initial="hidden"
+                  animate="visible"
+                  variants={animations.listItem}
+                  custom={index}
+                >
+                  <CatalogItem
+                    profile={psychologist}
+                    onFavoriteChange={handleFavoriteChange}
+                  />
+                </motion.li>
+              ))}
           </ul>
 
-          {visibleCount < updatedList.length && (
-            <div className="flex justify-center mt-8 lg:mt-16">
-              <button
+          {visibleCount < filteredPsychologists.length && (
+            <motion.div
+              className="flex justify-center mt-8 lg:mt-16"
+              initial="hidden"
+              animate="visible"
+              variants={animations.loadMoreButton}
+            >
+              <motion.button
                 onClick={loadMore}
                 disabled={isLoadMoreLoading}
                 className="flex justify-center items-center min-w-[124px] py-3 px-10 bg-primary-color hover:bg-primary-color-hover font-medium text-base text-white leading-tight rounded-[30px] transition-all duration-300"
+                whileHover="hover"
               >
                 {isLoadMoreLoading ? (
                   <span className="flex items-center gap-2">
@@ -81,13 +92,17 @@ const CatalogList = ({ fetchApi }) => {
                 ) : (
                   "Load more"
                 )}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           )}
         </>
       )}
     </div>
   );
+};
+
+CatalogList.propTypes = {
+  fetchApi: PropTypes.func.isRequired,
 };
 
 export default CatalogList;

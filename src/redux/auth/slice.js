@@ -2,11 +2,7 @@ import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { registerUser, loginUser, logoutUser } from "./operations";
 
 const initialState = {
-  user: {
-    name: null,
-    email: null,
-    password: null,
-  },
+  user: null, // Теперь храним только необходимые данные
   isLoggedIn: false,
   isRefreshing: false,
   error: null,
@@ -16,33 +12,34 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser(state) {
+    setUser(state, action) {
+      state.user = action.payload;
       state.isLoggedIn = true;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.isLoggedIn = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(logoutUser.fulfilled, () => initialState)
+      .addCase(logoutUser.fulfilled, () => initialState) // При выходе обнуляем состояние
       .addMatcher(
         isAnyOf(registerUser.pending, loginUser.pending, logoutUser.pending),
         (state) => {
           state.isRefreshing = true;
-          state.error = false;
+          state.error = null;
         }
       )
       .addMatcher(
         isAnyOf(registerUser.rejected, loginUser.rejected, logoutUser.rejected),
-        (state) => {
+        (state, action) => {
           state.isRefreshing = false;
-          state.error = true;
+          state.error = action.payload;
         }
       )
       .addMatcher(
@@ -53,7 +50,7 @@ const authSlice = createSlice({
         ),
         (state) => {
           state.isRefreshing = false;
-          state.error = false;
+          state.error = null;
         }
       );
   },

@@ -53,17 +53,6 @@ const catalogSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
-          fetchPsychologists.fulfilled,
-          fetchFavoritesForUser.fulfilled,
-          addToFavorites.fulfilled,
-          removeFromFavorites.fulfilled
-        ),
-        (state) => {
-          state.isLoading = false;
-        }
-      )
-      .addMatcher(
-        isAnyOf(
           fetchPsychologists.rejected,
           fetchFavoritesForUser.rejected,
           addToFavorites.rejected,

@@ -1,21 +1,18 @@
-import { logoutUser } from "../../service/authService.js";
-import { errToast, successfullyToast } from "../../utils/toast.js";
-import { useAuth } from "../../hooks/useAuth.jsx";
+import { logoutUser } from "../../redux/auth/operations.js";
+import { selectUser } from "../../redux/auth/selectors.js";
+
 import sprite from "../../assets/icons.svg";
 import { useNavigate } from "react-router-dom"; // імпортуємо useNavigate
+import { useDispatch, useSelector } from "react-redux";
 
 const UserMenu = () => {
-  const { user } = useAuth();
   const navigate = useNavigate(); // використовуємо хук useNavigate
+  const dispatch = useDispatch();
+  const userAuth = useSelector(selectUser);
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      navigate("/"); // використання navigate для перенаправлення
-      successfullyToast("Goodbye");
-    } catch (error) {
-      errToast(`Oops, ${error.message || error}`);
-    }
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/"); // використання navigate для перенаправлення
   };
 
   return (
@@ -28,7 +25,7 @@ const UserMenu = () => {
             </svg>
           </span>
           <p className="text-base font-medium text-black leading-tight">
-            {user?.displayName || "Ilona"}
+            {userAuth?.displayName || "Ilona"}
           </p>
         </div>
       </li>

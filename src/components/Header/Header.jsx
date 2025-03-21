@@ -1,54 +1,122 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import AuthMenu from "../AuthMenu/AuthMenu";
 import UserMenu from "../UserMenu/UserMenu";
+import { selectUser, selectIsRefreshing } from "../../redux/auth/selectors";
+import { useSelector } from "react-redux";
+import Loader from "../Loader/Loader";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
+const menuVariants = {
+  hidden: { x: "-100%" },
+  visible: { x: "0%", transition: { duration: 0.5, ease: "easeInOut" } },
+  exit: { x: "-100%", transition: { duration: 0.5, ease: "easeInOut" } },
+};
 
 const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
-  const { user } = useAuth();
+  const userAuth = useSelector(selectUser);
+  const isLoading = useSelector(selectIsRefreshing);
   const navigate = useNavigate();
 
-  // Загальні посилання для всіх користувачів
   const navItems = [
     { text: "Home", link: "/" },
     { text: "Psychologists", link: "/psychologists" },
-    // Додаємо "Features" лише для авторизованих користувачів
-    ...(user ? [{ text: "Features", link: "/features" }] : []),
+    ...(userAuth ? [{ text: "Features", link: "/features" }] : []),
   ];
 
-  // Перевірка авторизації при спробі переходу на Features
   useEffect(() => {
-    if (!user && window.location.pathname === "/features") {
-      navigate("/"); // Перенаправляємо на головну сторінку
+    if (!userAuth && window.location.pathname === "/features") {
+      navigate("/");
     }
-  }, [user, navigate]);
+  }, [userAuth, navigate]);
 
-  // Функція для обробки переходу на Features
   const handleNavLinkClick = (link) => {
-    if (link === "/features" && !user) {
-      navigate("/"); // Перенаправляємо на головну сторінку, якщо користувач не авторизований
+    if (link === "/features" && !userAuth) {
+      navigate("/");
     } else {
-      navigate(link); // Інакше переходимо за посиланням
+      navigate(link);
     }
+    setIsMenu(false); // Закриваємо мобільне меню після кліку
   };
 
   return (
-    <header className="fixed z-50 bg-gray-100 border-b w-full">
+    <motion.header
+      initial="hidden"
+      animate="visible"
+      variants={navVariants}
+      className="fixed z-50 bg-gray-100 border-b w-full"
+    >
       <div className="container-width container-px container-py flex items-center justify-between gap-10">
-        <NavLink
-          className="text-primary-color text-xl font-bold leading-[1.2] transition-all duration-300"
-          to="/"
-        >
-          psychologists.<span className="text-black">services</span>
-        </NavLink>
+        {/* Логотип */}
+        <motion.div variants={navVariants}>
+          <NavLink
+            className="text-primary-color text-xl font-bold leading-[1.2] transition-all duration-300"
+            to="/"
+          >
+            psychologists.<span className="text-black">services</span>
+          </NavLink>
+        </motion.div>
 
-        <button
+        {/* Десктопне меню */}
+        <nav className="hidden lg:flex items-center gap-10">
+          <ul className="flex items-center gap-10">
+            {navItems.map(({ text, link }, index) => (
+              <motion.li key={index} variants={navVariants}>
+                <NavLink
+                  to={link}
+                  className={({ isActive }) =>
+                    `relative p-3 text-base leading-tight text-black font-normal 
+                    before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 
+                    before:w-2 before:h-2 before:rounded-full before:transition-transform before:duration-300 
+                    ${
+                      isActive
+                        ? "before:bg-primary-color before:scale-100"
+                        : "before:scale-0"
+                    }`
+                  }
+                >
+                  {text}
+                </NavLink>
+              </motion.li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Авторизація для десктопа */}
+        <div className="hidden lg:flex">
+          <AnimatePresence mode="wait">
+            {isLoading ? (
+              <motion.div key="loader-desktop" variants={navVariants}>
+                <Loader height={30} width={30} color={"green"} />
+              </motion.div>
+            ) : !userAuth ? (
+              <motion.div key="auth-menu-desktop" variants={navVariants}>
+                <AuthMenu />
+              </motion.div>
+            ) : (
+              <motion.div key="user-menu-desktop" variants={navVariants}>
+                <UserMenu />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Кнопка мобільного меню */}
+        <motion.button
+          variants={navVariants}
           onClick={() => setIsMenu((prev) => !prev)}
           className="text-black focus:outline-none lg:hidden"
         >
           {isMenu ? (
-            <svg
+            <motion.svg
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 90 }}
               className="w-6 h-6"
               fill="none"
               stroke="black"
@@ -61,9 +129,11 @@ const Header = () => {
                 strokeWidth="2"
                 d="M6 18L18 6M6 6l12 12"
               />
-            </svg>
+            </motion.svg>
           ) : (
-            <svg
+            <motion.svg
+              initial={{ rotate: 90 }}
+              animate={{ rotate: 0 }}
               className="w-6 h-6"
               fill="none"
               stroke="black"
@@ -76,52 +146,70 @@ const Header = () => {
                 strokeWidth="2"
                 d="M4 6h16M4 12h16m-7 6h7"
               />
-            </svg>
+            </motion.svg>
           )}
-        </button>
+        </motion.button>
 
-        <nav
-          className={`absolute flex flex-col gap-4.5 top-14 left-0 w-full bg-gray-100 py-3 transition-all duration-500 ease-in-out 
-          ${
-            isMenu ? "translate-x-0" : "-translate-x-full"
-          } lg:relative lg:bg-transparent lg:top-0 lg:w-auto 
-          lg:flex lg:translate-x-0 lg:py-0`}
-        >
-          <ul className="flex flex-col lg:flex-row lg:items-center lg:gap-10 w-full lg:w-auto">
-            {navItems.map(({ text, link }, index) => (
-              <li key={index} className="w-full lg:w-auto text-center">
-                <NavLink
-                  to={link}
-                  onClick={() => handleNavLinkClick(link)} // Викликаємо функцію для переходу
-                  className={({ isActive }) =>
-                    `relative flex justify-center p-3 lg:p-0 text-base leading-tight text-black font-normal 
-                    before:absolute before:bottom-0 lg:before:bottom-[-10px] before:left-1/2 before:-translate-x-1/2 
-                    before:w-2 before:h-2 before:rounded-full before:transition-transform before:duration-300 
-                    ${
-                      isActive
-                        ? "before:bg-primary-color before:scale-100"
-                        : "before:scale-0"
-                    }`
-                  }
-                >
-                  {text}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+        {/* Мобільне меню */}
+        <AnimatePresence>
+          {isMenu && (
+            <motion.nav
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={menuVariants}
+              className="absolute flex flex-col gap-5 top-14 left-0 w-full bg-gray-100 py-5 lg:hidden"
+            >
+              <ul className="flex flex-col items-center w-full">
+                {navItems.map(({ text, link }, index) => (
+                  <motion.li
+                    key={index}
+                    variants={navVariants}
+                    className="w-full lg:w-auto text-center"
+                  >
+                    <NavLink
+                      to={link}
+                      onClick={() => handleNavLinkClick(link)}
+                      className={({ isActive }) =>
+                        `relative flex justify-center p-3 text-base leading-tight text-black font-normal 
+                        before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 
+                        before:w-2 before:h-2 before:rounded-full before:transition-transform before:duration-300 
+                        ${
+                          isActive
+                            ? "before:bg-primary-color before:scale-100"
+                            : "before:scale-0"
+                        }`
+                      }
+                    >
+                      {text}
+                    </NavLink>
+                  </motion.li>
+                ))}
+              </ul>
 
-          {/* Mobile buttons */}
-          <div className="flex justify-center gap-4 lg:hidden">
-            {!user ? <AuthMenu /> : <UserMenu />}
-          </div>
-        </nav>
-
-        {/* Desktop buttons */}
-        <div className="hidden gap-4 lg:flex">
-          {!user ? <AuthMenu /> : <UserMenu />}
-        </div>
+              {/* Авторизація для мобільного меню */}
+              <div className="flex flex-col items-center mt-4">
+                <AnimatePresence mode="wait">
+                  {isLoading ? (
+                    <motion.div key="loader-mobile" variants={navVariants}>
+                      <Loader height={30} width={30} color={"green"} />
+                    </motion.div>
+                  ) : !userAuth ? (
+                    <motion.div key="auth-menu-mobile" variants={navVariants}>
+                      <AuthMenu />
+                    </motion.div>
+                  ) : (
+                    <motion.div key="user-menu-mobile" variants={navVariants}>
+                      <UserMenu />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
-    </header>
+    </motion.header>
   );
 };
 

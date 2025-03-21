@@ -18,11 +18,16 @@ export const registerUser = createAsyncThunk(
         email,
         password
       );
-      await updateProfile(userCredential.user, {
-        displayName: name,
-      });
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: name });
+
       successfullyToast("Successful registration");
-      return userCredential;
+
+      return {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+      }; // Возвращаем только сериализуемые данные
     } catch (error) {
       errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
@@ -40,8 +45,15 @@ export const loginUser = createAsyncThunk(
         email,
         password
       );
+      const user = userCredential.user;
+
       successfullyToast("Successful Login");
-      return userCredential;
+
+      return {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+      }; // Возвращаем только сериализуемые данные
     } catch (error) {
       errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
@@ -53,9 +65,9 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
-      const logout = await signOut(auth);
+      await signOut(auth);
       successfullyToast("Goodbye");
-      return logout;
+      return null; // При выходе не передаем никаких данных
     } catch (error) {
       errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);

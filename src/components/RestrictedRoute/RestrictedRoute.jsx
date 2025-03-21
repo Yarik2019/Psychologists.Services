@@ -1,14 +1,10 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/selectors";
 
-export const RestrictedRoute = ({ element, redirectTo }) => {
-  const { user, loading } = useAuth();
-
-  // Show loading if authentication state is still being checked
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // If the user is authenticated, redirect to the provided redirectTo path
-  return user ? <Navigate to={redirectTo} /> : element;
+const RestrictedRoute = ({ component: Component, redirectTo = "/" }) => {
+  const userAuth = useSelector(selectUser);
+  return userAuth ? <Navigate to={redirectTo} /> : <Component />;
 };
+
+export default RestrictedRoute;

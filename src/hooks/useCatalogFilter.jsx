@@ -1,40 +1,62 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSortCriterion, setPriceFilter } from "../redux/filters/slice";
+import { selectIsLoading } from "../redux/сatalog/selectors";
 
-const useCatalogFilter = ({ fetchApi }) => {
+const useCatalogFilter = ({ catalog }) => {
+  const Loading = useSelector(selectIsLoading);
   const [psychologists, setPsychologists] = useState([]);
-  const [filteredPsychologists, setFilteredPsychologists] = useState([]);
-  const [sortCriterion, setSortCriterion] = useState("all");
+  const [isLoading, setIsLoading] = useState(Loading);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
-  // Завантаження даних із сервера
+  const sortCriterion = useSelector((state) => state.filters.sortCriterion);
+  const priceFilter = useSelector((state) => state.filters.priceFilter);
+
+  // Завантаження даних
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
+      setIsLoading(true);
       try {
-        const data = await fetchApi();
-        if (Array.isArray(data)) {
-          // Видаляємо некоректні дані (null, undefined, без name)
-          const validData = data.filter((p) => p && p.name);
-          setPsychologists(validData);
-          setFilteredPsychologists(validData);
-        } else {
-          console.error("Invalid data format received from API");
-        }
+        const data = Array.isArray(catalog) ? catalog : [];
+        setPsychologists(data.filter((p) => p && typeof p.name === "string"));
       } catch (error) {
+        setError(error.message);
         console.error("Error fetching psychologists:", error);
+        setPsychologists([]);
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchData();
-  }, [fetchApi]);
 
-  // Функція сортування
+    fetchData();
+  }, [catalog]);
+
+  // Фільтрація за ціною
+  const filterByPrice = useCallback(
+    (list) => {
+      switch (priceFilter) {
+        case "lessThan10":
+          return list.filter((p) => p.price && p.price < 10);
+        case "greaterThan10":
+          return list.filter((p) => p.price && p.price > 10);
+        default:
+          return list;
+      }
+    },
+    [priceFilter]
+  );
+
+  // Сортування
   const sortPsychologists = useCallback(
     (list) => {
       return [...list].sort((a, b) => {
-        const nameA = a.name || "";
-        const nameB = b.name || "";
-        const priceA = a.price ?? 0;
-        const priceB = b.price ?? 0;
-        const ratingA = a.rating ?? 0;
-        const ratingB = b.rating ?? 0;
+        const nameA = a?.name?.toLowerCase() || "";
+        const nameB = b?.name?.toLowerCase() || "";
+        const priceA = a?.price ?? 0;
+        const priceB = b?.price ?? 0;
+        const ratingA = a?.rating ?? 0;
+        const ratingB = b?.rating ?? 0;
 
         switch (sortCriterion) {
           case "nameAsc":
@@ -57,36 +79,21 @@ const useCatalogFilter = ({ fetchApi }) => {
     [sortCriterion]
   );
 
-  // Викликаємо сортування при зміні критеріїв або списку психологів
-  useEffect(() => {
-    setFilteredPsychologists(sortPsychologists(psychologists));
-  }, [sortCriterion, psychologists, sortPsychologists]);
-
-  // Фільтрація за ціною
-  const filterByPrice = (criteria) => {
-    const filteredArray =
-      criteria === "lessThan10"
-        ? psychologists.filter((p) => p.price < 10)
-        : criteria === "greaterThan10"
-        ? psychologists.filter((p) => p.price > 10)
-        : psychologists;
-
-    setFilteredPsychologists(filteredArray);
-  };
+  // Підсумкова фільтрація та сортування
+  const filteredPsychologists = useMemo(() => {
+    return filterByPrice(sortPsychologists(psychologists));
+  }, [psychologists, sortPsychologists, filterByPrice]);
 
   // Обробник зміни фільтрів
-  const handleFilterChange = (e) => {
-    const value = e.target.value;
-    if (value === "all") {
-      setFilteredPsychologists(psychologists);
-    } else if (value === "lessThan10" || value === "greaterThan10") {
-      filterByPrice(value);
+  const handleFilterChange = (value) => {
+    if (["all", "lessThan10", "greaterThan10"].includes(value)) {
+      dispatch(setPriceFilter(value));
     } else {
-      setSortCriterion(value);
+      dispatch(setSortCriterion(value));
     }
   };
 
-  return { filteredPsychologists, handleFilterChange, sortCriterion };
+  return { filteredPsychologists, handleFilterChange, isLoading, error };
 };
 
 export default useCatalogFilter;

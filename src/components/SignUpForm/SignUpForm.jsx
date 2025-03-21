@@ -1,15 +1,17 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { orderSchemaReg } from "../../utils/formValidation";
 import icons from "../../assets/icons.svg";
-import { errToast, successfullyToast } from "../../utils/toast";
-import { registerUser } from "../../service/authService";
+import { registerUser } from "../../redux/auth/operations";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
-
+import { useDispatch } from "react-redux";
+import { animationsForm } from "../../utils/animation";
 const SignUpForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -21,27 +23,33 @@ const SignUpForm = ({ onClose }) => {
     password: "",
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      await registerUser(values.name, values.email, values.password);
+  const handleSubmit = async (values) => {
+    const response = await dispatch(registerUser(values));
+    if (response.meta.requestStatus === "fulfilled") {
       navigate("/features");
-      successfullyToast("Successful registration");
       onClose();
-    } catch (error) {
-      errToast(`Oops, ${error.message}`);
-    } finally {
-      setSubmitting(false);
     }
   };
+
   return (
-    <div>
-      <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={animationsForm.container}
+    >
+      <motion.h2
+        variants={animationsForm.fadeInUp}
+        className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]"
+      >
         Registration
-      </h2>
-      <p className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight">
-        Thank you for your interest in our platform! In order to register, we
-        need some information. Please provide us with the following information.
-      </p>
+      </motion.h2>
+      <motion.p
+        variants={animationsForm.fadeInUp}
+        className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight"
+      >
+        Thank you for your interest in our platform! Please provide the
+        following information to register.
+      </motion.p>
       <Formik
         initialValues={initialValues}
         validationSchema={orderSchemaReg}
@@ -49,15 +57,16 @@ const SignUpForm = ({ onClose }) => {
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
-            <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
-              {/* Name Field */}
+            <motion.div
+              variants={animationsForm.fadeInUp}
+              className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10"
+            >
               <div className="flex flex-col">
                 <Field
                   name="name"
                   type="text"
                   id="name"
-                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                  ${
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
                     touched.name
                       ? errors.name
                         ? "border-red-500 focus:ring-red-300"
@@ -66,7 +75,7 @@ const SignUpForm = ({ onClose }) => {
                   }`}
                   placeholder="Name"
                   required
-                  autoComplete="name" // Added autocomplete for name
+                  autoComplete="name"
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -75,14 +84,12 @@ const SignUpForm = ({ onClose }) => {
                 />
               </div>
 
-              {/* Email Field */}
               <div className="flex flex-col">
                 <Field
                   name="email"
                   type="email"
                   id="email"
-                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                  ${
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
                     touched.email
                       ? errors.email
                         ? "border-red-500 focus:ring-red-300"
@@ -91,7 +98,7 @@ const SignUpForm = ({ onClose }) => {
                   }`}
                   placeholder="Email"
                   required
-                  autoComplete="email" // Added autocomplete for email
+                  autoComplete="email"
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -100,15 +107,13 @@ const SignUpForm = ({ onClose }) => {
                 />
               </div>
 
-              {/* Password Field */}
               <div className="flex flex-col">
                 <div className="relative">
                   <Field
                     name="password"
                     type={passwordVisible ? "text" : "password"}
                     id="password"
-                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                    ${
+                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
                       touched.password
                         ? errors.password
                           ? "border-red-500 focus:ring-red-300"
@@ -117,7 +122,7 @@ const SignUpForm = ({ onClose }) => {
                     }`}
                     placeholder="Password"
                     required
-                    autoComplete="new-password" // Added autocomplete for password
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -125,15 +130,13 @@ const SignUpForm = ({ onClose }) => {
                     onClick={togglePasswordVisibility}
                     aria-label="Toggle Password Visibility"
                   >
-                    {passwordVisible ? (
-                      <svg width="15" height="15" className="text-red-500">
-                        <use href={`${icons}#icon-eye`} />
-                      </svg>
-                    ) : (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`${icons}#icon-eye_off`} />
-                      </svg>
-                    )}
+                    <svg width="15" height="15" className="fill-current">
+                      <use
+                        href={`${icons}#${
+                          passwordVisible ? "icon-eye" : "icon-eye_off"
+                        }`}
+                      />
+                    </svg>
                   </button>
                 </div>
                 <ErrorMessage
@@ -142,10 +145,10 @@ const SignUpForm = ({ onClose }) => {
                   component="p"
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Submit Button */}
-            <button
+            <motion.button
+              variants={animationsForm.fadeInScale}
               type="submit"
               disabled={isSubmitting}
               className="w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
@@ -158,11 +161,11 @@ const SignUpForm = ({ onClose }) => {
               ) : (
                 "Sign Up"
               )}
-            </button>
+            </motion.button>
           </Form>
         )}
       </Formik>
-    </div>
+    </motion.div>
   );
 };
 

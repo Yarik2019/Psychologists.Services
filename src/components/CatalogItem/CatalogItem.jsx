@@ -1,70 +1,83 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 import icons from "../../assets/icons.svg";
 import {
   addToFavorites,
   removeFromFavorites,
   fetchFavoritesForUser,
-} from "../../service/FetchService.js";
+} from "../../redux/сatalog/operations";
+import { selectFavorites } from "../../redux/сatalog/selectors";
+
 import Loader from "../Loader/Loader";
-import { errToast, successfullyToast } from "../../utils/toast";
-import { useAuth } from "../../hooks/useAuth";
 import TherapistProfile from "../TherapistProfile/TherapistProfile";
 import ReviewsAccordion from "../ReviewsAccardion/ReviewsAccardion";
+import { errToast, successfullyToast } from "../../utils/toast";
+import { selectUser } from "../../redux/auth/selectors";
+import { animationsItem } from "../../utils/animation";
 
-const CatalogItem = ({ profile, onFavoriteChange }) => {
-  const { user } = useAuth();
+const CatalogItem = ({ profile }) => {
+  const userAuth = useSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const favorites = useSelector(selectFavorites) || [];
 
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingFavorites, setLoadingFavorites] = useState(false);
 
-  // Перевіряємо, чи психолог є в улюблених
   useEffect(() => {
-    if (!user) return;
+    if (userAuth && favorites.length === 0) {
+      dispatch(fetchFavoritesForUser(userAuth?.uid));
+    }
+  }, [dispatch, userAuth, favorites.length]);
 
-    const checkFavoriteStatus = async () => {
-      try {
-        const favorites = await fetchFavoritesForUser(user.uid);
-        setIsFavorite(favorites.some((fav) => fav.id === profile.id));
-      } catch (error) {
-        console.error("Помилка отримання улюблених:", error);
-      }
-    };
+  useEffect(() => {
+    setIsFavorite(favorites?.some((fav) => fav?.id === profile?.id) || false);
+  }, [favorites, profile?.id]);
 
-    checkFavoriteStatus();
-  }, [user, profile.id]);
-
-  // Додавання/видалення психолога в улюблені
   const toggleFavorite = async () => {
-    if (!user) {
+    if (!userAuth) {
       errToast("Ви не зареєстровані! Увійдіть в акаунт.");
       navigate("/");
       return;
     }
 
-    setIsLoading(true);
+    setLoadingFavorites(true);
+
     try {
       if (isFavorite) {
-        await removeFromFavorites(user.uid, profile);
+        await dispatch(
+          removeFromFavorites({
+            userId: userAuth?.uid,
+            psychologistId: profile.id,
+          })
+        ).unwrap();
         successfullyToast("Видалено з улюблених");
       } else {
-        await addToFavorites(user.uid, profile);
+        await dispatch(
+          addToFavorites({ userId: userAuth?.uid, psychologist: profile })
+        ).unwrap();
         successfullyToast("Додано в улюблені");
       }
+
+      await dispatch(fetchFavoritesForUser(userAuth?.uid));
     } catch (error) {
       errToast(`Помилка: ${error.message}`);
+    } finally {
+      setLoadingFavorites(false);
     }
-
-    setIsFavorite((prev) => !prev);
-    onFavoriteChange();
-    setIsLoading(false);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-3 md:p-6 bg-white rounded-3xl">
-      <div>
+    <motion.div
+      className="flex flex-col md:flex-row gap-6 p-3 md:p-6 bg-white rounded-3xl"
+      initial="hidden"
+      animate="visible"
+      variants={animationsItem.container}
+    >
+      <motion.div variants={animationsItem.avatar}>
         <div className="relative w-full h-[300px] md:w-[120px] md:h-[120px] p-3 border-2 border-solid border-primary-color/20 rounded-[30px]">
           <img
             className="block w-full h-full rounded-[15px] object-cover"
@@ -75,13 +88,23 @@ const CatalogItem = ({ profile, onFavoriteChange }) => {
             <div className="w-[10px] h-[10px] bg-color-green rounded-full"></div>
           </div>
         </div>
-      </div>
+      </motion.div>
+
       <div>
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-2">
-          <h3 className="text-base font-medium text-primary-color-gray font-inter leading-normal">
+        <motion.div
+          className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-2"
+          variants={animationsItem.header}
+        >
+          <motion.h3
+            className="text-base font-medium text-primary-color-gray font-inter leading-normal"
+            variants={animationsItem.text}
+          >
             Psychologist
-          </h3>
-          <div className="flex justify-between items-center">
+          </motion.h3>
+          <motion.div
+            className="flex justify-between items-center"
+            variants={animationsItem.rating}
+          >
             <div className="flex">
               <div className="flex items-center gap-1">
                 <svg className="w-4 h-4 fill-primary-color-star">
@@ -100,16 +123,14 @@ const CatalogItem = ({ profile, onFavoriteChange }) => {
               </p>
             </div>
 
-            <button onClick={toggleFavorite} disabled={isLoading}>
-              {isLoading ? (
-                <div>
-                  <Loader
-                    height={20}
-                    width={20}
-                    color={"green"}
-                    className="text-red-600"
-                  />
-                </div>
+            <motion.button
+              onClick={toggleFavorite}
+              disabled={loadingFavorites}
+              variants={animationsItem.favoriteButton}
+              whileHover="hover"
+            >
+              {loadingFavorites ? (
+                <Loader height={26} width={26} color={"green"} />
               ) : isFavorite ? (
                 <svg className="w-6.5 h-6.5 fill-primary-color hover:scale-125 transition-all duration-300">
                   <use href={`${icons}#icon-hearts`}></use>
@@ -119,12 +140,17 @@ const CatalogItem = ({ profile, onFavoriteChange }) => {
                   <use href={`${icons}#icon-heart`}></use>
                 </svg>
               )}
-            </button>
-          </div>
-        </div>
-        <h2 className="text-black mb-6 font-inter font-medium text-2xl leading-none">
+            </motion.button>
+          </motion.div>
+        </motion.div>
+
+        <motion.h2
+          className="text-black mb-6 font-inter font-medium text-2xl leading-none"
+          variants={animationsItem.name}
+        >
           {profile.name}
-        </h2>
+        </motion.h2>
+
         <TherapistProfile therapistProfile={profile} />
         <ReviewsAccordion
           name={profile.name}
@@ -132,7 +158,7 @@ const CatalogItem = ({ profile, onFavoriteChange }) => {
           reviews={profile.reviews}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

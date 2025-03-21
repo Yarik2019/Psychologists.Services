@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { motion } from "framer-motion";
 import { orderSchemaRegMakeAnAppointment } from "../../utils/formValidation";
-
+import { animationsMakeAnAppointment } from "../../utils/animation";
 const initialValues = {
   name: "",
   number: "",
@@ -19,21 +20,31 @@ const handleSubmit = (values, { setSubmitting, resetForm }) => {
 
 const MakeAnAppointment = ({ name, avatar }) => {
   return (
-    <div>
-      <h2 className="text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
+    <motion.div initial="initial" animate="animate">
+      <motion.h2
+        className="text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]"
+        {...animationsMakeAnAppointment.fadeInUp(0)}
+      >
         Make an appointment with a psychologist
-      </h2>
-      <p className="text-base text-black/50 mb-10 font-inter font-medium leading-tight">
+      </motion.h2>
+      <motion.p
+        className="text-base text-black/50 mb-10 font-inter font-medium leading-tight"
+        {...animationsMakeAnAppointment.fadeInUp(0.1)}
+      >
         You are on the verge of changing your life for the better. Fill out the
         short form below to book your personal appointment with a professional
         psychologist. We guarantee confidentiality and respect for your privacy.
-      </p>
-      <div className="flex gap-3.5 mb-10">
+      </motion.p>
+      <motion.div
+        className="flex gap-3.5 mb-10"
+        {...animationsMakeAnAppointment.fadeInUp(0.2)}
+      >
         <div className="bg-amber-300 w-11 h-11 rounded-[15px]">
-          <img
+          <motion.img
             className="w-full h-full rounded-[15px]"
             src={avatar}
             alt={name}
+            whileHover={{ scale: 1.1 }}
           />
         </div>
         <div>
@@ -44,7 +55,7 @@ const MakeAnAppointment = ({ name, avatar }) => {
             {name}
           </h3>
         </div>
-      </div>
+      </motion.div>
       <Formik
         initialValues={initialValues}
         validationSchema={orderSchemaRegMakeAnAppointment}
@@ -53,20 +64,21 @@ const MakeAnAppointment = ({ name, avatar }) => {
         {({ errors, touched, isSubmitting }) => (
           <Form>
             <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
-              {/* Name Field */}
-              <div className="flex flex-col">
+              <motion.div
+                className="flex flex-col"
+                {...animationsMakeAnAppointment.fadeInUp(0.3)}
+              >
                 <Field
                   name="name"
                   type="text"
                   id="name"
-                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                        ${
-                          touched.name
-                            ? errors.name
-                              ? "border-red-500 focus:ring-red-300"
-                              : "border-primary-color focus:ring-primary-color"
-                            : "border-gray-300 focus:ring-blue-300"
-                        }`}
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                    touched.name
+                      ? errors.name
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-primary-color focus:ring-primary-color"
+                      : "border-gray-300 focus:ring-blue-300"
+                  }`}
                   placeholder="Name"
                   autoComplete="name"
                 />
@@ -76,23 +88,24 @@ const MakeAnAppointment = ({ name, avatar }) => {
                   component="p"
                   aria-live="polite"
                 />
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col md:flex-row gap-4 md:gap-2">
-                {/* Phone Number */}
+              <motion.div
+                className="flex flex-col md:flex-row gap-4 md:gap-2"
+                {...animationsMakeAnAppointment.fadeInUp(0.4)}
+              >
                 <div className="flex flex-col">
                   <Field
                     name="number"
                     type="tel"
                     id="number"
-                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                        ${
-                          touched.number
-                            ? errors.number
-                              ? "border-red-500 focus:ring-red-300"
-                              : "border-primary-color focus:ring-primary-color"
-                            : "border-gray-300 focus:ring-blue-300"
-                        }`}
+                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                      touched.number
+                        ? errors.number
+                          ? "border-red-500 focus:ring-red-300"
+                          : "border-primary-color focus:ring-primary-color"
+                        : "border-gray-300 focus:ring-blue-300"
+                    }`}
                     placeholder="+380"
                     autoComplete="tel"
                   />
@@ -103,21 +116,18 @@ const MakeAnAppointment = ({ name, avatar }) => {
                     aria-live="polite"
                   />
                 </div>
-
-                {/* Date Picker */}
                 <div className="flex flex-col">
                   <Field
                     name="date"
                     type="date"
                     id="date"
-                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                        ${
-                          touched.date
-                            ? errors.date
-                              ? "border-red-500 focus:ring-red-300"
-                              : "border-primary-color focus:ring-primary-color"
-                            : "border-gray-300 focus:ring-blue-300"
-                        }`}
+                    className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                      touched.date
+                        ? errors.date
+                          ? "border-red-500 focus:ring-red-300"
+                          : "border-primary-color focus:ring-primary-color"
+                        : "border-gray-300 focus:ring-blue-300"
+                    }`}
                   />
                   <ErrorMessage
                     className="text-red-500 text-sm mt-1"
@@ -126,22 +136,23 @@ const MakeAnAppointment = ({ name, avatar }) => {
                     aria-live="polite"
                   />
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Email Field */}
-              <div className="flex flex-col">
+              <motion.div
+                className="flex flex-col"
+                {...animationsMakeAnAppointment.fadeInUp(0.5)}
+              >
                 <Field
                   name="email"
                   type="email"
                   id="email"
-                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all 
-                        ${
-                          touched.email
-                            ? errors.email
-                              ? "border-red-500 focus:ring-red-300"
-                              : "border-primary-color focus:ring-primary-color"
-                            : "border-gray-300 focus:ring-blue-300"
-                        }`}
+                  className={`w-full py-4 px-4.5 text-black font-inter font-normal leading-tight border-1 border-solid rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                    touched.email
+                      ? errors.email
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-primary-color focus:ring-primary-color"
+                      : "border-gray-300 focus:ring-blue-300"
+                  }`}
                   placeholder="Email"
                   autoComplete="email"
                 />
@@ -151,10 +162,12 @@ const MakeAnAppointment = ({ name, avatar }) => {
                   component="p"
                   aria-live="polite"
                 />
-              </div>
+              </motion.div>
 
-              {/* Comment Field */}
-              <div className="flex flex-col">
+              <motion.div
+                className="flex flex-col"
+                {...animationsMakeAnAppointment.fadeInUp(0.6)}
+              >
                 <Field
                   name="comment"
                   as="textarea"
@@ -170,22 +183,25 @@ const MakeAnAppointment = ({ name, avatar }) => {
                   component="p"
                   aria-live="polite"
                 />
-              </div>
+              </motion.div>
             </div>
 
-            {/* Submit Button */}
-            <button
+            <motion.button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300 
-                ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              whileHover={animationsMakeAnAppointment.button.hover}
+              whileTap={animationsMakeAnAppointment.button.tap}
+              {...animationsMakeAnAppointment.fadeInUp(0.7)}
             >
               {isSubmitting ? "Sending..." : "Send"}
-            </button>
+            </motion.button>
           </Form>
         )}
       </Formik>
-    </div>
+    </motion.div>
   );
 };
 

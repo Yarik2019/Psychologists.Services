@@ -1,43 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPsychologists } from "./operations";
 
 const initialState = {
-  psychologists: [],
-  filteredPsychologists: [],
-  sortCriterion: "all",
-  isLoading: false,
-  error: null,
+  sortCriterion: "all", // Критерій сортування
+  priceFilter: "all", // Фільтр за ціною
 };
 
-const catalogSlice = createSlice({
-  name: "catalog",
+const filtersSlice = createSlice({
+  name: "filters",
   initialState,
   reducers: {
     setSortCriterion: (state, action) => {
       state.sortCriterion = action.payload;
     },
-    setFilteredPsychologists: (state, action) => {
-      state.filteredPsychologists = action.payload;
+    setPriceFilter: (state, action) => {
+      state.priceFilter = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchPsychologists.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchPsychologists.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.psychologists = action.payload;
-        state.filteredPsychologists = action.payload;
-      })
-      .addCase(fetchPsychologists.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      });
   },
 });
 
-export const { setSortCriterion, setFilteredPsychologists } =
-  catalogSlice.actions;
-export default catalogSlice.reducer;
+export const { setSortCriterion, setPriceFilter } = filtersSlice.actions;
+export const filterReducer = filtersSlice.reducer;

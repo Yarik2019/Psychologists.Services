@@ -1,44 +1,53 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
-import { orderSchemaLogin } from "../../utils/formValidation"; // Перевірте правильність цього імпорту
-import icons from "../../assets/icons.svg"; // Якщо використовуєте іконки
-import { errToast, successfullyToast } from "../../utils/toast.js";
-import { loginUser } from "../../service/authService.js";
+import { motion } from "framer-motion";
+import { orderSchemaLogin } from "../../utils/formValidation";
+import icons from "../../assets/icons.svg";
+import { loginUser } from "../../redux/auth/operations.js";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader.jsx";
+import { useDispatch } from "react-redux";
+import { animationsForm } from "../../utils/animation.js";
+
 const SignInForm = ({ onClose }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const initForm = {
-    email: "",
-    password: "",
-  };
+  const initForm = { email: "", password: "" };
 
   const handleSubmit = async (values) => {
-    try {
-      await loginUser(values.email, values.password);
+    const response = await dispatch(loginUser(values));
+
+    if (response.meta.requestStatus === "fulfilled") {
       navigate("/features");
-      successfullyToast("Successful Login");
       onClose();
-    } catch (error) {
-      errToast(`Oops, ${error}`);
     }
   };
 
   return (
-    <div>
-      <h2 className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={animationsForm.container}
+    >
+      <motion.h2
+        variants={animationsForm.fadeInUp}
+        className="text-2xl lg:text-[40px] mb-5 text-black font-inter font-medium leading-[1.2]"
+      >
         Log In
-      </h2>
-      <p className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight">
+      </motion.h2>
+      <motion.p
+        variants={animationsForm.fadeInUp}
+        className="text-base mb-5 md:mb-10 text-black/50 font-inter leading-tight"
+      >
         Welcome back! Please enter your credentials to access your account and
         continue your search for a psychologist.
-      </p>
+      </motion.p>
       <Formik
         initialValues={initForm}
         validationSchema={orderSchemaLogin}
@@ -46,8 +55,10 @@ const SignInForm = ({ onClose }) => {
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
-            <div className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10">
-              {/* Email Field */}
+            <motion.div
+              variants={animationsForm.fadeInUp}
+              className="flex flex-col gap-3 md:gap-4.5 mb-5 md:mb-10"
+            >
               <div className="flex flex-col">
                 <Field
                   name="email"
@@ -63,7 +74,7 @@ const SignInForm = ({ onClose }) => {
                   }`}
                   placeholder="Email"
                   required
-                  autoComplete="email" // Додаємо атрибут autocomplete для email
+                  autoComplete="email"
                 />
                 <ErrorMessage
                   className="text-red-500 text-sm mt-1"
@@ -71,8 +82,6 @@ const SignInForm = ({ onClose }) => {
                   component="p"
                 />
               </div>
-
-              {/* Password Field */}
               <div className="flex flex-col">
                 <div className="relative">
                   <Field
@@ -89,22 +98,20 @@ const SignInForm = ({ onClose }) => {
                     }`}
                     placeholder="Password"
                     required
-                    autoComplete="current-password" // Додаємо атрибут autocomplete для password
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                     onClick={togglePasswordVisibility}
                   >
-                    {passwordVisible ? (
-                      <svg width="15" height="15" className="text-red-500">
-                        <use href={`${icons}#icon-eye`} />
-                      </svg>
-                    ) : (
-                      <svg width="15" height="15" className="fill-current">
-                        <use href={`${icons}#icon-eye_off`} />
-                      </svg>
-                    )}
+                    <svg width="15" height="15" className="fill-current">
+                      <use
+                        href={`${icons}#${
+                          passwordVisible ? "icon-eye" : "icon-eye_off"
+                        }`}
+                      />
+                    </svg>
                   </button>
                 </div>
                 <ErrorMessage
@@ -113,26 +120,26 @@ const SignInForm = ({ onClose }) => {
                   component="p"
                 />
               </div>
-            </div>
-
-            <button
+            </motion.div>
+            <motion.button
+              variants={animationsForm.fadeInScale}
               type="submit"
               disabled={isSubmitting}
-              className="w-full  py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
+              className="w-full py-4 bg-primary-color hover:bg-primary-color-hover text-base text-white font-inter font-medium leading-tight rounded-[30px] transition-all duration-300"
             >
               {isSubmitting ? (
                 <span className="flex justify-center">
-                  <span>Signing In</span>{" "}
+                  <span>Signing In</span>
                   <Loader height={20} width={20} color={"white"} />
                 </span>
               ) : (
                 "Sign In"
               )}
-            </button>
+            </motion.button>
           </Form>
         )}
       </Formik>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
 import { ref, get, set, remove } from "firebase/database";
 import { database } from "../../service/firebase";
 import { errToast, successfullyToast } from "../../utils/toast";
@@ -30,11 +29,8 @@ export const fetchFavoritesForUser = createAsyncThunk(
       const favoritesRef = ref(database, `users/${userId}/favorites`);
       const snapshot = await get(favoritesRef);
       successfullyToast("Data favorites loaded");
-      if (!snapshot.exists()) {
-        return [];
-      }
 
-      return Object.values(snapshot.val());
+      return snapshot.val() ? Object.values(snapshot.val()) : [];
     } catch (error) {
       errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
@@ -42,50 +38,39 @@ export const fetchFavoritesForUser = createAsyncThunk(
   }
 );
 
-// Додати психолога в обране для конкретного користувача
+// Додати психолога в обране
 export const addToFavorites = createAsyncThunk(
   "favorites/add",
   async ({ userId, psychologist }, thunkAPI) => {
-    if (!userId) return thunkAPI.rejectWithValue("User ID is missing");
-    if (!psychologist?.id)
-      return thunkAPI.rejectWithValue("Invalid psychologist data");
-
     try {
+      if (!userId) throw new Error("User не авторизований");
+      if (!psychologist?.id) throw new Error("Invalid psychologist data");
+
       const favoriteRef = ref(
         database,
         `users/${userId}/favorites/${psychologist.id}`
       );
-
       await set(favoriteRef, psychologist);
-      successfullyToast("Psychologist added to favorites");
-
-      return psychologist; // Повертаємо доданого психолога
     } catch (error) {
-      errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// Видалити психолога з обраного для конкретного користувача
+// Видалити психолога з обраного
 export const removeFromFavorites = createAsyncThunk(
   "favorites/remove",
   async ({ userId, psychologistId }, thunkAPI) => {
-    if (!userId) return thunkAPI.rejectWithValue("User ID is missing");
-    if (!psychologistId)
-      return thunkAPI.rejectWithValue("Psychologist ID is missing");
-
     try {
+      if (!userId) throw new Error("User не авторизований");
+      if (!psychologistId) throw new Error("Psychologist ID is missing");
+
       const favoriteRef = ref(
         database,
         `users/${userId}/favorites/${psychologistId}`
       );
       await remove(favoriteRef);
-
-      successfullyToast("Psychologist removed from favorites");
-      return psychologistId; // Повертаємо ID для оновлення Redux-стану
     } catch (error) {
-      errToast(`Error: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

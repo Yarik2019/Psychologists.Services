@@ -142,14 +142,23 @@ button {
 
 .window {
   position: relative;
-  padding: 12px;
+  padding: 64px;
   background-color: var(--white);
   border-radius: 16px;
   box-shadow: 0 8px 20px var(--modal-backdrop);
   max-width: 500px;
+  max-height: 90vh; /* Збільшена максимальна висота */
+  overflow-y: auto; /* Вертикальна прокрутка при необхідності */
+  overflow-x: hidden; /* Приховує горизонтальний скролінг */
   margin: 0 auto;
   transform: scale(0.9);
   animation: showModal 0.3s ease-out forwards;
+}
+
+/* Приховує боковий скролбар */
+.window::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
 }
 
 @media (min-width: 768px) {
