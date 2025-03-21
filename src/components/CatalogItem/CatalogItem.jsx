@@ -23,19 +23,15 @@ const CatalogItem = ({ profile }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavorites) || [];
-
-  const [isFavorite, setIsFavorite] = useState(false);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
 
   useEffect(() => {
-    if (userAuth && favorites.length === 0) {
-      dispatch(fetchFavoritesForUser(userAuth?.uid));
+    if (userAuth) {
+      dispatch(fetchFavoritesForUser({ userId: userAuth?.uid }));
     }
-  }, [dispatch, userAuth, favorites.length]);
+  }, [dispatch, userAuth]);
 
-  useEffect(() => {
-    setIsFavorite(favorites?.some((fav) => fav?.id === profile?.id) || false);
-  }, [favorites, profile?.id]);
+  const isFavorite = favorites.some((fav) => fav?.id === profile?.id);
 
   const toggleFavorite = async () => {
     if (!userAuth) {
@@ -61,8 +57,7 @@ const CatalogItem = ({ profile }) => {
         ).unwrap();
         successfullyToast("Added to favorites.");
       }
-
-      await dispatch(fetchFavoritesForUser(userAuth?.uid));
+      dispatch(fetchFavoritesForUser({ userId: userAuth?.uid }));
     } catch (error) {
       errToast(`Error: ${error.message}`);
     } finally {
