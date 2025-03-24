@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ref, get, set, remove } from "firebase/database";
 import { database } from "../../service/firebase";
-import { errToast, successfullyToast } from "../../utils/toast";
+import { errToast } from "../../utils/toast";
 
 // Отримати всіх психологів
 export const fetchPsychologists = createAsyncThunk(

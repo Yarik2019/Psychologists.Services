@@ -14,7 +14,7 @@ import { selectFavorites } from "../../redux/сatalog/selectors";
 import Loader from "../Loader/Loader";
 import TherapistProfile from "../TherapistProfile/TherapistProfile";
 import ReviewsAccordion from "../ReviewsAccardion/ReviewsAccardion";
-import { errToast, successfullyToast } from "../../utils/toast";
+import { errToast } from "../../utils/toast";
 import { selectUser } from "../../redux/auth/selectors";
 import { animationsItem } from "../../utils/animation";
 
@@ -50,12 +50,10 @@ const CatalogItem = ({ profile }) => {
             psychologistId: profile.id,
           })
         ).unwrap();
-        successfullyToast("Removed from favorites.");
       } else {
         await dispatch(
           addToFavorites({ userId: userAuth?.uid, psychologist: profile })
         ).unwrap();
-        successfullyToast("Added to favorites.");
       }
       dispatch(fetchFavoritesForUser({ userId: userAuth?.uid }));
     } catch (error) {
