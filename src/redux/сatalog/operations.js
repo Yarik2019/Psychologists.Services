@@ -10,7 +10,6 @@ export const fetchPsychologists = createAsyncThunk(
     try {
       const psychologistsRef = ref(database, "psychologists");
       const snapshot = await get(psychologistsRef);
-      successfullyToast("Data psychologists loaded");
       return snapshot.val() ? Object.values(snapshot.val()) : [];
     } catch (error) {
       errToast(`Error: ${error.message}`);
@@ -28,8 +27,6 @@ export const fetchFavoritesForUser = createAsyncThunk(
     try {
       const favoritesRef = ref(database, `users/${userId}/favorites`);
       const snapshot = await get(favoritesRef);
-      successfullyToast("Data favorites loaded");
-
       return snapshot.val() ? Object.values(snapshot.val()) : [];
     } catch (error) {
       errToast(`Error: ${error.message}`);
